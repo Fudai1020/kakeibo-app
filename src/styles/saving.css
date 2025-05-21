@@ -1,0 +1,19 @@
+.saving-box{
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: rgba(58, 106, 153, 0.7);
+    width: 400px;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+}
+.saving-category{
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+}

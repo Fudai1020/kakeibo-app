@@ -1,0 +1,15 @@
+.income-box{
+    border: 2px solid black;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: rgba(58, 106, 153, 0.7);
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+}
+button{
+    width: 200px;
+}
