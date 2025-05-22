@@ -27,7 +27,7 @@ const Home = () => {
       <MonthNavigate />
       </div>
       <div className="income-layout">
-      <Income />
+      <Income onAddClick={openModal} />
       </div>
       <div className="saving-layout">
       <Saving />

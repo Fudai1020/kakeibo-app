@@ -1,3 +1,5 @@
+import '../styles/modal.css'
+
 type Props = {
   onClose: () => void;
   children: React.ReactNode;
@@ -6,9 +8,10 @@ type Props = {
 
 export const Modal = ({onClose,children}:Props) => {
   return (
-    <div>
-        <button onClick={onClose}></button>
+    <div className='modal-overlay' onClick={onClose}>
+      <div className='modal-content' onClick={(e)=> e.stopPropagation()}>
         {children}
+      </div>
     </div>
   )
 }

@@ -1,0 +1,30 @@
+.modal-container{
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+.input-amount{
+    margin-top: 20px;
+}
+.input-amount input{
+    width: 200px;
+    height: 30px;
+}
+.radio-group input[type="radio"] {
+  transform: scale(2); /* 1.5倍の大きさにする */
+  margin-right: 8px;
+}
+.radio-group label {
+  margin-right: 16px;
+  font-size: 25px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+.radio-group{
+    margin-top: 20px;
+}
