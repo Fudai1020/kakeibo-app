@@ -10,11 +10,13 @@
     margin-top: 20px;
 }
 .input-amount input{
-    width: 200px;
-    height: 30px;
+    width: 250px;
+    height: 40px;
+    text-align: center;
+    color: rgba(255, 255, 255, 1);
 }
 .radio-group input[type="radio"] {
-  transform: scale(2); /* 1.5倍の大きさにする */
+  transform: scale(2); /* 2倍の大きさにする */
   margin-right: 8px;
 }
 .radio-group label {
@@ -27,4 +29,52 @@
 }
 .radio-group{
     margin-top: 20px;
+}
+.select-category select{
+    width: 250px;
+    height: 50px;
+    background-color: rgba(58, 85, 153, 0.8);
+    color: white;
+    border-radius: 4%;
+    border: 1px solid black;
+    text-align: center;
+    font-weight: bold;
+    font-size: larger;
+}
+.select-category h2{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.select-category select:hover{
+    background-color: rgba(58, 85, 153, 1);
+}
+.memo textarea{
+    background-color: rgba(58, 85, 153, 0.8);
+    border-radius: 5%;
+    border: 1px solid black;
+    width: 250px;
+    height: 90px;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+.memo h2{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.date-lay h2{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.date-lay input{
+     width: 250px;
+    height: 35px;
+    text-align: center;
+}
+.radio-group h2{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.index-button{
+    margin-top: 30px;
 }
