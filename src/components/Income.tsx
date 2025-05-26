@@ -1,15 +1,43 @@
 type props = {
   onAddClick:() =>void;
+  setModalType:React.Dispatch<React.SetStateAction<"transaction" | "saving" | null>>;
 }
 
+import { useEffect, useState } from 'react';
 import '../styles/income.css'
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
 
-const income = ({onAddClick}:props) => {
+const income = ({onAddClick,setModalType}:props) => {
+  const [total,setTotal] = useState(0);
+
+  useEffect(()=>{
+    const q  = query(
+      collection(db,"transactions"),
+      where("type","==","income")
+    );
+
+    const unsubscribe = onSnapshot(q,(snapshot)=>{
+      const incomeAmounts = snapshot.docs.map((doc)=>{
+        const data =doc.data();
+        return typeof data.amount === "number" ? data.amount : 0;
+      });
+
+      const totalIncome = incomeAmounts.reduce((sum,amount)=> sum+amount,0);
+      setTotal(totalIncome);
+    })
+    return () => unsubscribe();
+  },[]);
+
+  const handleClick = () =>{
+    setModalType("transaction")
+    onAddClick();
+  }
   return (
     <div className="income-box">
         <h1>今月の収入</h1>
-        <h2>¥10000</h2>
-        <button onClick={onAddClick}>収入を追加</button>
+        <h2>¥{total.toLocaleString()}</h2>
+        <button onClick={handleClick}>収入を追加</button>
     </div>
   )
 }
