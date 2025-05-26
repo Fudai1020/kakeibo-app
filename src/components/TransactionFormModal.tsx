@@ -9,7 +9,10 @@ type Props = {
 
 const TransactionFormModal = ({onClose}:Props) => {
 
-  const [type,setType] = useState('income');
+  const incomeCategories = ["給料","副業"];
+  const paymentCategories = ["食費","家賃","光熱費"];
+
+  const [type,setType] = useState<"income"|"payment">('income');
   const [amount,setAmount] = useState("");
   const [category,setCategory] = useState("");
   const [memo,setMemo] = useState("");
@@ -55,8 +58,10 @@ const TransactionFormModal = ({onClose}:Props) => {
       <div className="select-category">
       <h2>カテゴリ</h2>
       <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        <option value="">選択</option>
-        <option value="食費">食費</option>
+        <option value=""></option>
+        {(type === "income" ? incomeCategories : paymentCategories).map((c)=>(
+        <option key={c} value={c}>{c}</option>
+        ))}
       </select>
       </div>
       <div className="memo">
