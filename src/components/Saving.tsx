@@ -1,6 +1,14 @@
+type props = {
+  onAddClick:() => void;
+  setModalType:React.Dispatch<React.SetStateAction<"transaction" | "saving" | null>>;
+}
 import '../styles/saving.css' 
 
-const Saving = () => {
+const Saving = ({onAddClick,setModalType}:props) => {
+  const handleClick = ()=>{
+    setModalType("saving");
+    onAddClick();
+  }
   return (
     <div className="saving-box">
         <h1 style={{marginBottom:'-10px'}}>今月の収支</h1>
@@ -10,7 +18,7 @@ const Saving = () => {
         <p>人生の貯金：¥1000</p>
         <p>人生の貯金：¥1000</p>
         </div>
-        <button>振り分け</button>       
+        <button onClick={handleClick}>振り分け</button>       
     </div>
   )
 }
