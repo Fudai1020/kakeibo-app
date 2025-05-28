@@ -15,7 +15,7 @@ const Home = () => {
 
   const openModal = () => setIsopenModal(true);
   const closeModal = () => setIsopenModal(false);
-
+  const [savingBalance,setSavingBalance] = useState(0);
 
   return (
     <div>
@@ -26,7 +26,7 @@ const Home = () => {
         <TransactionFormModal onClose={closeModal} />
         )}
         {modalType === "saving" &&(
-          <SavingAllocationModal onClose={closeModal}/>
+          <SavingAllocationModal onClose={closeModal} balance={savingBalance}/>
         )}
       </Modal>
     )}
@@ -37,7 +37,7 @@ const Home = () => {
       <Income onAddClick={openModal} setModalType={setModalType}/>
       </div>
       <div className="saving-layout">
-      <Saving onAddClick={openModal} setModalType={setModalType}/>
+      <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance}/>
       </div>
       <div className="payment-layout">
       <Payment onAddClick={openModal} setModalType={setModalType}/>

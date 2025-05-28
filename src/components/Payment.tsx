@@ -18,7 +18,7 @@ const Payment = ({onAddClick,setModalType}:props) => {
               collection(db,"transactions"),
               where("type","==","payment")
             );
-        
+            
             const unsubscribe = onSnapshot(q,(snapshot)=>{
               const paymentAmounts = snapshot.docs.map((doc)=>{
                 const data =doc.data();
