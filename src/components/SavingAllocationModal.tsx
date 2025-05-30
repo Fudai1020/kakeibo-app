@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../styles/savingAllocationModal.css'
-import { addDoc } from 'firebase/firestore';
+import { addDoc, getDocs } from 'firebase/firestore';
 import { collection } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 type props = {
@@ -12,13 +12,22 @@ const SavingAllocationModal = ({onClose,balance}:props) => {
   const [allocationName,setAllocationName] = useState("");
   const [allocationAmount,setAllocationAmount] = useState("");
   const [isPrivate,setIsPrivate] = useState("");
+
+  useEffect(()=>{
+    const fetchAllocations = async () =>{
+      const snapshot = await getDocs(collection(db,'SavingAllocations'));
+      const data = snapshot.docs.map(doc => doc.data() as {name:string,amount:string})
+      setAllocations(data);
+    }
+    fetchAllocations();
+  },[]);
   const handleSave = async() =>{
     try{
       const batch = allocations.map((item) => {
         return addDoc(collection(db,"SavingAllocations"),{
           name:item.name,
           amount:Number(item.amount) || 0,
-          isPrivate:isPrivate==='公開',
+          isPrivate:isPrivate==='非公開',
           createdAt:new Date()
         })
       });
