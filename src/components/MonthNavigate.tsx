@@ -1,9 +1,11 @@
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import '../styles/monthNavigate.css' 
-import { useState } from "react"
 
-const MonthNavigate = () => {
-  const [date,setDate] = useState(new Date())
+type props ={
+  date:Date,
+  setDate:React.Dispatch<React.SetStateAction<Date>>;
+}
+const MonthNavigate = ({date,setDate}:props) => {
 
   const handlePrevMonth = () => {
     const prevDate = new Date(date);

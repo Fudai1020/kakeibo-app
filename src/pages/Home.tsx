@@ -12,10 +12,11 @@ import SavingAllocationModal from "../components/SavingAllocationModal"
 const Home = () => {
   const [modalType,setModalType] = useState<"transaction" | "saving" | null>(null);
   const [isopenModal,setIsopenModal] = useState(false);
-
   const openModal = () => setIsopenModal(true);
   const closeModal = () => setIsopenModal(false);
   const [savingBalance,setSavingBalance] = useState(0);
+  const [selectDate,setSelectDate] = useState(new Date());
+  const [transactionTyoe,setTransactionType] = useState<'income' | 'payment'>('income')  
 
   return (
     <div>
@@ -23,24 +24,24 @@ const Home = () => {
     {isopenModal && (
       <Modal onClose={closeModal}>
         {modalType === "transaction" &&(
-        <TransactionFormModal onClose={closeModal} />
+        <TransactionFormModal onClose={closeModal} type={transactionTyoe} />
         )}
         {modalType === "saving" &&(
-          <SavingAllocationModal onClose={closeModal} balance={savingBalance}/>
+          <SavingAllocationModal onClose={closeModal} balance={savingBalance} selectedDate={selectDate}/>
         )}
       </Modal>
     )}
       <div className="month-layout">
-      <MonthNavigate />
+      <MonthNavigate date={selectDate} setDate={setSelectDate} />
       </div>
       <div className="income-layout">
-      <Income onAddClick={openModal} setModalType={setModalType}/>
+      <Income onAddClick={()=>{setTransactionType('income');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate}/>
       </div>
       <div className="saving-layout">
-      <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance}/>
+      <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance} selectedDate={selectDate}/>
       </div>
       <div className="payment-layout">
-      <Payment onAddClick={openModal} setModalType={setModalType}/>
+      <Payment onAddClick={()=>{setTransactionType('payment');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate}/>
       </div>
     </div>
   )

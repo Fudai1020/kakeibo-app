@@ -14,7 +14,7 @@ button{
     color: white;
     border-radius: 6px;
     border: none;
-    
+  cursor: pointer;
 }
 input:hover{
     background-color: rgba(58, 85, 153, 1);

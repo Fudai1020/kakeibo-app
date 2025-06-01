@@ -1,6 +1,7 @@
 type props = {
     onAddClick:() => void;
   setModalType:React.Dispatch<React.SetStateAction<"transaction" | "saving" | null>>;
+  selectedDate:Date;
 }
 
 import { useEffect, useState } from 'react';
@@ -8,7 +9,7 @@ import '../styles/payment.css'
 import { query, collection, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
-const Payment = ({onAddClick,setModalType}:props) => {
+const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
     const [totalAmount,setTotalAmount] = useState(0);
     const [categoryTotals,setCategoryTotals] = useState<{[key:string]:Number}>({});
     
@@ -22,16 +23,24 @@ const Payment = ({onAddClick,setModalType}:props) => {
             const unsubscribe = onSnapshot(q,(snapshot)=>{
               const paymentAmounts = snapshot.docs.map((doc)=>{
                 const data =doc.data();
+                const createdAt = data.date?.toDate?.() || new Date()
                 return {
                     amount: typeof data.amount === "number" ? data.amount : 0,
-                    category:data.category ?? "未分類"
+                    category:data.category ?? "未分類",
+                    createdAt,
                 }
               });
-            const totalPayment = paymentAmounts.reduce((sum,item) => sum + item.amount,0);
+              const filtered = paymentAmounts.filter((item)=>{
+                return(
+                    item.createdAt.getFullYear() === selectedDate.getFullYear() &&
+                    item.createdAt.getMonth() === selectedDate.getMonth()
+                )
+              })
+            const totalPayment = filtered.reduce((sum,item) => sum + item.amount,0);
             setTotalAmount(totalPayment);
 
             const categoryMap: {[key:string]:number} = {};
-            paymentAmounts.forEach((item)=>{
+            filtered.forEach((item)=>{
                 if(categoryMap[item.category]){
                     categoryMap[item.category] += item.amount;
                 }else{
@@ -42,7 +51,7 @@ const Payment = ({onAddClick,setModalType}:props) => {
             });
             return  () => unsubscribe();
 
-    },[]);
+    },[selectedDate]);
 
 
 
@@ -57,6 +66,7 @@ const Payment = ({onAddClick,setModalType}:props) => {
         <div className='container'>
             <div className='left'>
                 <div className='centered'>
+                    <div className='category-box'>
                 <h2>項目</h2>
                 <ul>
                     {Object.entries(categoryTotals).map(([category,amount])=>
@@ -65,6 +75,7 @@ const Payment = ({onAddClick,setModalType}:props) => {
                         {category}・・・¥{amount.toLocaleString()}</li>
                     )}
                 </ul>
+                    </div>
                 </div>
             </div>
             <div className='right'>

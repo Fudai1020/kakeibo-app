@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import '../styles/transactionFormModal.css'
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
 type Props = {
   onClose: () => void;
+  type:'income' | 'payment';
 };
 
-const TransactionFormModal = ({onClose}:Props) => {
+const TransactionFormModal = ({onClose,type:initialType}:Props) => {
 
   const incomeCategories = ["給料","副業"];
   const paymentCategories = ["食費","家賃","光熱費"];
 
-  const [type,setType] = useState<"income"|"payment">('income');
+  const [type,setType] = useState<"income"|"payment">(initialType);
   const [amount,setAmount] = useState("");
   const [category,setCategory] = useState("");
   const [memo,setMemo] = useState("");
@@ -31,7 +32,7 @@ const TransactionFormModal = ({onClose}:Props) => {
         amount:normalizeAmount(amount),
         category,
         memo,
-        date:new Date(),
+        date:serverTimestamp(),
         isPrivate,
       });
       alert("登録完了！");

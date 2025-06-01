@@ -6,8 +6,9 @@ import { db } from '../firebase/firebase';
 type props = {
     onClose:() => void;
     balance:number;
+  selectedDate:Date;
 }
-const SavingAllocationModal = ({onClose,balance}:props) => {
+const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
   const [allocations,setAllocations] = useState<{name:string;amount:string}[]>([]);
   const [allocationName,setAllocationName] = useState("");
   const [allocationAmount,setAllocationAmount] = useState("");
@@ -16,11 +17,24 @@ const SavingAllocationModal = ({onClose,balance}:props) => {
   useEffect(()=>{
     const fetchAllocations = async () =>{
       const snapshot = await getDocs(collection(db,'SavingAllocations'));
-      const data = snapshot.docs.map(doc => doc.data() as {name:string,amount:string})
-      setAllocations(data);
+      const data = snapshot.docs.map((doc) => {
+        const d = doc.data()
+        return{
+          name:d.name,
+          amount:d.amount,
+          createAt:d.date?.toDate?.() || new Date(),
+        }
+      })
+      const filtered = data.filter((item) => {
+        return(
+          item.createAt.getFullYear() === selectedDate.getFullYear() &&
+          item.createAt.getMonth() === selectedDate.getMonth()
+        )
+      })
+      setAllocations(filtered);
     }
     fetchAllocations();
-  },[]);
+  },[selectedDate]);
   const handleSave = async() =>{
     try{
       const batch = allocations.map((item) => {
