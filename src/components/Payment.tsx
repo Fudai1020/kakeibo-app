@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import '../styles/payment.css'
 import { query, collection, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
+import Charts from './Charts';
 
 const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
     const [totalAmount,setTotalAmount] = useState(0);
@@ -80,7 +81,10 @@ const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
             </div>
             <div className='right'>
                 <div className='chart'>
-
+                    <Charts paymentData={Object.entries(categoryTotals).map(([category,amount])=> ({
+                        category,
+                        amount:Number(amount),
+                    }))}/>
                 </div>
             </div>
         </div>

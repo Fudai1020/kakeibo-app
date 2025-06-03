@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../styles/savingAllocationModal.css'
-import { addDoc, getDocs } from 'firebase/firestore';
+import { setDoc, getDocs ,doc } from 'firebase/firestore';
 import { collection } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 type props = {
@@ -38,7 +38,8 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
   const handleSave = async() =>{
     try{
       const batch = allocations.map((item) => {
-        return addDoc(collection(db,"SavingAllocations"),{
+        const docRef = doc(db,'SavingAllocations',item.name)
+        return setDoc(docRef,{
           name:item.name,
           amount:Number(item.amount) || 0,
           isPrivate:isPrivate==='非公開',
@@ -65,7 +66,7 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
         </h1>
         <h2>振り分け先を選ぶ</h2>
         <div className='amount-form'>
-        <ul>
+        <ul className='allocation-list'>
           {allocations.map((item,index)=>(
           <li key={index}>{item.name}・・・¥<input type="input" value={item.amount} onChange={(e) => {
             const newAllocations = [...allocations];

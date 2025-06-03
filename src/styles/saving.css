@@ -15,12 +15,15 @@
 }
 .saving-category{
     display: flex;
-    justify-content: space-around;
+    justify-content:center;
+    flex-direction: column;
     margin: 0;
     overflow: auto;
+    max-height: 80px;
 }
 .saving-category p{
     font-size: larger;
+    margin-bottom: 0px;
 }
 .Saving-button{
    margin-top: auto;
