@@ -1,5 +1,5 @@
 .header{
-    background-color: #828282;
+    background-color: rgba(130, 130, 130, 1);
     display: flex;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -8,6 +8,14 @@
     width: 175px;
     height:auto;
     margin-left: 30px;
+    
+}
+.logo-hover:hover{
+    background-color: rgba(130, 130, 130, 1);
+    transform: scale(1.2); 
+}
+.logo-link:visited{
+  color: inherit;
 
 }
 .layout-right{
@@ -22,7 +30,7 @@
 
 }
 .icons{
-    margin-left: 100px;
+    margin-left: 110px;
 
 }
 .header h1:hover{

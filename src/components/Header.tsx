@@ -12,7 +12,7 @@ const Header = () => {
         <Link to='/Category' className='link-style'><h1>カテゴリ別</h1></Link>
         </div>
         <div className='icons'>
-        <UserCircle2 size={45} style={{verticalAlign:'middle',marginRight:'20px'}}/>
+        <Link to="/userProfile" className='logo-link'><UserCircle2 className='logo-hover' size={47} style={{verticalAlign:'middle',marginRight:'30px'}}/></Link>
         <Settings size={45} style={{verticalAlign:'middle'}}/>
         </div>
         </div>

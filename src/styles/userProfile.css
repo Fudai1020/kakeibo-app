@@ -1,0 +1,26 @@
+.main-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    text-align: center;
+}
+.profile-icon {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%; /* 丸くする */
+  border: 3px solid black; /* 白い丸枠 */
+  overflow: hidden; /* 中の画像がはみ出さないように */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto; /* 中央寄せ（必要なら） */
+  background-color: #ccc; /* 画像が読み込まれないときの背景色 */
+}
+
+.profile-img {
+  width: 90%;
+  height: 90%;
+  padding-top: 20px;
+  object-fit: cover; /* 枠に合わせて画像を切り取り */
+}

@@ -75,9 +75,9 @@ useEffect(()=>{
   }
   return (
     <div className="saving-box">
-        <h1 style={{marginBottom:'-10px'}}>今月の収支</h1>
-        <h2 style={{marginBottom:'-10px'}}>¥{savingTotal.toLocaleString()}</h2>
-        <h2 style={{marginBottom:'0px'}}> 貯金一覧</h2>
+        <h1 style={{marginBottom:'-20px'}}>今月の収支</h1>
+        <h2 style={{marginBottom:'-20px'}}>¥{savingTotal.toLocaleString()}</h2>
+        <h2 style={{marginBottom:'-5px'}}> 貯金一覧</h2>
         <div className='saving-category'>
           {savingAllocations.map((item,index)=>(
             <p key={index}>

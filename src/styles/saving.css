@@ -17,14 +17,15 @@
     display: flex;
     justify-content:center;
     flex-direction: column;
-    margin: 0;
-    overflow: auto;
-    max-height: 80px;
-    margin-bottom: 5px;
+    overflow-y: auto;
+    max-height:auto ;
+    margin-bottom: 10px;
+    gap: 2px;
+    padding-top: 15px;
 }
 .saving-category p{
-    font-size: larger;
-    margin-bottom: 0px;
+    font: bold;
+    margin: 0px;
 }
 .Saving-button{
    margin-top: auto;
