@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import '../styles/saving.css' 
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
+import { getAuth } from 'firebase/auth';
 
 const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate}:props) => {
   const [savingTotal,setSavingTotal] = useState(0);
@@ -15,8 +16,12 @@ const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate}:props) =>
 
 
   useEffect(()=>{
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+
+    if(currentUser){
     const q = query(
-      collection(db,"transactions")
+      collection(db,"users",currentUser.uid,"transactions")
     );
 
     const unsubscribe = onSnapshot(q,(snapshot)=>{
@@ -51,7 +56,7 @@ const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate}:props) =>
       onBalanceChange(balance);
     });
     return ()=> unsubscribe();
-
+    }
   },[selectedDate]);
 
 useEffect(()=>{

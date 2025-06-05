@@ -9,15 +9,19 @@ import '../styles/payment.css'
 import { query, collection, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import Charts from './Charts';
+import { getAuth } from 'firebase/auth';
 
 const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
     const [totalAmount,setTotalAmount] = useState(0);
     const [categoryTotals,setCategoryTotals] = useState<{[key:string]:Number}>({});
     
     useEffect(() => {
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
 
+        if(currentUser){
         const q  = query(
-              collection(db,"transactions"),
+              collection(db,"users",currentUser.uid,"transactions"),
               where("type","==","payment")
             );
             
@@ -51,6 +55,7 @@ const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
             setCategoryTotals(categoryMap);
             });
             return  () => unsubscribe();
+        }
 
     },[selectedDate]);
 

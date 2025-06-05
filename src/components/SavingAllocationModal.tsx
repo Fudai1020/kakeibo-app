@@ -3,6 +3,7 @@ import '../styles/savingAllocationModal.css'
 import { setDoc, getDocs ,doc } from 'firebase/firestore';
 import { collection } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
+import { getAuth } from 'firebase/auth';
 type props = {
     onClose:() => void;
     balance:number;
@@ -15,8 +16,13 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
   const [isPrivate,setIsPrivate] = useState("");
 
   useEffect(()=>{
+
+      const auth = getAuth();
+  const currentUser = auth.currentUser;
+
+    if(currentUser){
     const fetchAllocations = async () =>{
-      const snapshot = await getDocs(collection(db,'SavingAllocations'));
+      const snapshot = await getDocs(collection(db,'users',currentUser.uid,'SavingAllocations'));
       const data = snapshot.docs.map((doc) => {
         const d = doc.data()
         return{
@@ -34,11 +40,16 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
       setAllocations(filtered);
     }
     fetchAllocations();
+  }
   },[selectedDate]);
   const handleSave = async() =>{
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+    if(currentUser){
     try{
       const batch = allocations.map((item) => {
-        const docRef = doc(db,'SavingAllocations',item.name)
+        const docRef = doc(db,'users',currentUser.uid,'SavingAllocations',item.name)
         return setDoc(docRef,{
           name:item.name,
           amount:Number(item.amount) || 0,
@@ -51,6 +62,7 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
     }catch(error){
       console.error('保存エラー',error);
     }
+  }
   }
 
   const handleClick = () => {

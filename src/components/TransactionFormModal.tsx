@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import '../styles/transactionFormModal.css'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
+import { getAuth } from 'firebase/auth';
 
 type Props = {
   onClose: () => void;
@@ -26,20 +27,24 @@ const TransactionFormModal = ({onClose,type:initialType}:Props) => {
   }
 
   const handleSubmit = async () => {
-    try{
-      await addDoc(collection(db,"transactions"),{
-        type,
-        amount:normalizeAmount(amount),
-        category,
-        memo,
-        date:serverTimestamp(),
-        isPrivate,
-      });
-      alert("登録完了！");
-      onClose();
-    }catch(e){
-      console.error("保存エラー",e);
-      alert("保存に失敗しました");
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+    if(currentUser){  
+      try{
+        await addDoc(collection(db,"users",currentUser.uid,"transactions"),{
+          type,
+          amount:normalizeAmount(amount),
+          category,
+          memo,
+          date:new Date(date),
+          isPrivate,
+        });
+        alert("登録完了！");
+        onClose();
+      }catch(e){
+        console.error("保存エラー",e);
+        alert("保存に失敗しました");
+      }
     }
   };
 
