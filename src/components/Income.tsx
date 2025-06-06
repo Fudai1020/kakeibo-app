@@ -8,17 +8,17 @@ import { useEffect, useState } from 'react';
 import '../styles/income.css'
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const income = ({onAddClick,setModalType,selectedDate}:props) => {
   const [total,setTotal] = useState(0);
   useEffect(()=>{
     const auth = getAuth();
-    const currentUser = auth.currentUser;
+    const unsubscribeAuth = onAuthStateChanged(auth,(user)=>{
 
-    if(currentUser){
+      if(user){
     const q  = query(
-      collection(db,"users",currentUser.uid,"transactions"),
+      collection(db,"users",user.uid,"transactions"),
       where("type","==","income")
     );
 
@@ -42,6 +42,9 @@ const income = ({onAddClick,setModalType,selectedDate}:props) => {
     })
     return () => unsubscribe();
     }
+    })
+    return ()=> unsubscribeAuth();
+    
   },[selectedDate]);
 
   const handleClick = () =>{

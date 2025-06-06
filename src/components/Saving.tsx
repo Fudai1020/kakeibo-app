@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import '../styles/saving.css' 
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate}:props) => {
   const [savingTotal,setSavingTotal] = useState(0);
@@ -17,14 +17,12 @@ const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate}:props) =>
 
   useEffect(()=>{
     const auth = getAuth();
-    const currentUser = auth.currentUser;
+    const unsubscribeAuth = onAuthStateChanged(auth,(user)=>{
+      if(user){
+        const q = query(
+        collection(db,"users",user.uid,"transactions"));
 
-    if(currentUser){
-    const q = query(
-      collection(db,"users",currentUser.uid,"transactions")
-    );
-
-    const unsubscribe = onSnapshot(q,(snapshot)=>{
+      const unsubscribe = onSnapshot(q,(snapshot)=>{
       const docs = snapshot.docs.map((doc)=>{
         const d = doc.data();
         return{
@@ -32,7 +30,7 @@ const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate}:props) =>
           amount:typeof d.amount === 'number' ? d.amount : 0,
           createdAt:d.date?.toDate?.() || new Date(),
         }
-      });
+      });  
       const filteredDocs = docs.filter((item) =>{
         return(
           item.createdAt.getFullYear() === selectedDate.getFullYear() &&
@@ -57,21 +55,30 @@ const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate}:props) =>
     });
     return ()=> unsubscribe();
     }
+    })
+    return () => unsubscribeAuth();
   },[selectedDate]);
 
 useEffect(()=>{
-  const q = query(collection(db,'SavingAllocations'));
-  const unsubscribe = onSnapshot(q,(snapshot)=>{
-    const data = snapshot.docs.map((doc) => {
+  const auth = getAuth();
+  const unsubscribeAuth = onAuthStateChanged(auth,(user)=>{
+
+    if(user){
+      const q = query(collection(db,'users',user.uid,'SavingAllocations'));
+      const unsubscribe = onSnapshot(q,(snapshot)=>{
+      const data = snapshot.docs.map((doc) => {
       const d = doc.data()
-    return{
+      return{
       name:d.name,
       amount:d.amount,
-    }
+      };
     });
     setSavingAllocations(data);
-  })
+      }); 
   return () => unsubscribe();
+  }
+});
+return () => unsubscribeAuth();
 },[]);
 
   const handleClick = ()=>{

@@ -9,7 +9,7 @@ import '../styles/payment.css'
 import { query, collection, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import Charts from './Charts';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
     const [totalAmount,setTotalAmount] = useState(0);
@@ -17,16 +17,15 @@ const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
     
     useEffect(() => {
         const auth = getAuth();
-        const currentUser = auth.currentUser;
-
-        if(currentUser){
-        const q  = query(
-              collection(db,"users",currentUser.uid,"transactions"),
-              where("type","==","payment")
-            );
+        const unsubscribeAuth = onAuthStateChanged(auth,(user)=>{
+            if(user){
+                const q  = query(
+                collection(db,"users",user.uid,"transactions"),
+                where("type","==","payment")
+                );
             
-            const unsubscribe = onSnapshot(q,(snapshot)=>{
-              const paymentAmounts = snapshot.docs.map((doc)=>{
+                const unsubscribe = onSnapshot(q,(snapshot)=>{
+                const paymentAmounts = snapshot.docs.map((doc)=>{
                 const data =doc.data();
                 const createdAt = data.date?.toDate?.() || new Date()
                 return {
@@ -55,8 +54,9 @@ const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
             setCategoryTotals(categoryMap);
             });
             return  () => unsubscribe();
-        }
-
+            }
+        });
+        return() => unsubscribeAuth();
     },[selectedDate]);
 
 
