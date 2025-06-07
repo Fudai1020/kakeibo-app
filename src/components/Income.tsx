@@ -9,6 +9,7 @@ import '../styles/income.css'
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import AnimateNumber from './AnimateNumber';
 
 const income = ({onAddClick,setModalType,selectedDate}:props) => {
   const [total,setTotal] = useState(0);
@@ -54,7 +55,7 @@ const income = ({onAddClick,setModalType,selectedDate}:props) => {
   return (
     <div className="income-box">
         <h1>今月の収入</h1>
-        <h2>¥{total.toLocaleString()}</h2>
+        <h2><AnimateNumber value={total} /></h2>
         <button onClick={handleClick}>収入を追加</button>
     </div>
   )

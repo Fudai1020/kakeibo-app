@@ -1,6 +1,5 @@
 import Header from "../components/Header"
 
-
 const Category = () => {
   return (
     <div>

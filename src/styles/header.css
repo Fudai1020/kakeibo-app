@@ -33,8 +33,9 @@
     margin-left: 110px;
 
 }
-.header h1:hover{
+.gap h1:hover{
       text-decoration: underline;
+      cursor: pointer;
 }
 .link-style{
     color: white;

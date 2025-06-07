@@ -9,6 +9,7 @@ import '../styles/saving.css'
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import AnimateNumber from './AnimateNumber';
 
 const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate}:props) => {
   const [savingTotal,setSavingTotal] = useState(0);
@@ -88,7 +89,7 @@ return () => unsubscribeAuth();
   return (
     <div className="saving-box">
         <h1 style={{marginBottom:'-20px'}}>今月の収支</h1>
-        <h2 style={{marginBottom:'-20px'}}>¥{savingTotal.toLocaleString()}</h2>
+        <h2 style={{marginBottom:'-20px'}}><AnimateNumber value={savingTotal} /></h2>
         <h2 style={{marginBottom:'-5px'}}> 貯金一覧</h2>
         <div className='saving-category'>
           {savingAllocations.map((item,index)=>(

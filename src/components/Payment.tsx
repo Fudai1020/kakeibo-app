@@ -10,6 +10,7 @@ import { query, collection, where, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import Charts from './Charts';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import AnimateNumber from './AnimateNumber';
 
 const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
     const [totalAmount,setTotalAmount] = useState(0);
@@ -68,7 +69,7 @@ const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
   return (
     <div className='payment-box'>
         <h1 style={{marginBottom:'-15px'}}>今月の支出</h1>
-        <h2 style={{marginBottom:'-10px'}}>¥{totalAmount.toLocaleString()}</h2>
+        <h2 style={{marginBottom:'-10px'}}><AnimateNumber value={totalAmount} /></h2>
         <div className='container'>
             <div className='left'>
                 <div className='centered'>

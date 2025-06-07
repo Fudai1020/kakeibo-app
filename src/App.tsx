@@ -8,7 +8,9 @@ import Category from './pages/Category'
 import Shared from './pages/Shared'
 import UserProfile from './pages/UserProfile'
 
+
 function App() {
+
 
   return (
 
@@ -16,7 +18,7 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/Register" element={<Register />} /> 
       <Route path="/Home" element={<Home />} />
-      <Route path="/category" element={<Category />} />
+      <Route path="/category" element={<Category  />} />
       <Route path="/shared" element={<Shared />} />
       <Route path="/userProfile" element={<UserProfile />} />
       </Routes>

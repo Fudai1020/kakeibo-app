@@ -6,6 +6,7 @@ import { doc, getDoc } from "firebase/firestore"
 import { db } from "../firebase/firebase"
 import { getAuth } from "firebase/auth"
 
+
 const UserProfile = () => {
     const [userData,setUserData] = useState<{name?:string,email?:string,photoURL?:string} | null>(null);
 

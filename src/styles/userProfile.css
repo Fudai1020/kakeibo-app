@@ -16,6 +16,8 @@
   justify-content: center;
   margin: 0 auto; /* 中央寄せ（必要なら） */
   background-color: #ccc; /* 画像が読み込まれないときの背景色 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
 }
 
 .profile-img {

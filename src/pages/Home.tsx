@@ -9,8 +9,9 @@ import TransactionFormModal from "../components/TransactionFormModal"
 import { Modal } from "../components/Modal"
 import SavingAllocationModal from "../components/SavingAllocationModal"
 
+
 const Home = () => {
-  const [modalType,setModalType] = useState<"transaction" | "saving" | null>(null);
+  const [modalType,setModalType] = useState<"transaction" | "saving" |null>(null);
   const [isopenModal,setIsopenModal] = useState(false);
   const openModal = () => setIsopenModal(true);
   const closeModal = () => setIsopenModal(false);
