@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
 }
 .modal-content{
     background: rgba(59,77,97, 1);
@@ -19,4 +20,8 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-top: 40px;
+}
+@keyframes fadeIn{
+    from {opacity: 0;}
+    to{opacity: 1;}
 }
