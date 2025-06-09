@@ -14,7 +14,7 @@ import AnimateNumber from './AnimateNumber';
 
 const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
     const [totalAmount,setTotalAmount] = useState(0);
-    const [categoryTotals,setCategoryTotals] = useState<{[key:string]:Number}>({});
+    const [categoryTotals,setCategoryTotals] = useState<{[key:string]:number}>({});
     
     useEffect(() => {
         const auth = getAuth();
@@ -79,7 +79,7 @@ const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
                     {Object.entries(categoryTotals).map(([category,amount])=>
                     
                     <li key={category}>
-                        {category}・・・¥{amount.toLocaleString()}</li>
+                        {category}・・・<AnimateNumber value={amount} /></li>
                     )}
                 </ul>
                     </div>
