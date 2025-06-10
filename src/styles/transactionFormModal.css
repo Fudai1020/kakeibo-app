@@ -7,7 +7,7 @@
     align-items: center;
 }
 .input-amount{
-    margin-top: 20px;
+    margin-top: 30px;
 }
 .input-amount input{
     width: 250px;
@@ -28,7 +28,7 @@
   font-weight: bold;
 }
 .radio-group{
-    margin-top: 20px;
+    margin-top: 30px;
 }
 .select-category select{
     width: 250px;
@@ -41,13 +41,7 @@
     font-weight: bold;
     font-size: larger;
 }
-.select-category h2{
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-.select-category select:hover{
-    background-color: rgba(58, 85, 153, 1);
-}
+
 .memo textarea{
     background-color: rgba(58, 85, 153, 0.8);
     border-radius: 5%;
@@ -59,11 +53,11 @@
     text-align: center;
 }
 .memo h2{
-    margin-top: 5px;
+    margin-top: 15px;
     margin-bottom: 5px;
 }
 .date-lay h2{
-    margin-top: 5px;
+    margin-top: 15px;
     margin-bottom: 5px;
 }
 .date-lay input{
@@ -72,9 +66,49 @@
     text-align: center;
 }
 .radio-group h2{
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 .index-button{
     margin-top: 30px;
+}
+@keyframes slideInright {
+    from{
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to{
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+@keyframes slideInleft{
+    from{
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to{
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+.slide-in-right{
+    animation: slideInright 0.3s ease forwards;
+}
+.slide-in-left{
+    animation: slideInleft 0.3s ease forwards;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+.slide-in-left input{
+    height: 35px;
+    width: 250px;
+}
+.slide-in-left select{
+    width: 255px;
+    height: 35px;
+    background-color: rgba(58, 85, 153, 1);
+    border: 1px solid black;
 }

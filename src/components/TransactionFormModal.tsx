@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '../styles/transactionFormModal.css'
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
@@ -10,9 +10,9 @@ type Props = {
 };
 
 const TransactionFormModal = ({onClose,type:initialType}:Props) => {
-
-  const incomeCategories = ["給料","副業"];
-  const paymentCategories = ["食費","家賃","光熱費"];
+  const [view,setView] = useState<'form' | 'category'>('form');
+  const [slideDirection,setSlideDirection] = useState<'left'|'right'|null>(null);
+  const [animeClass,setAnimeClass] = useState('slide-in-right');
 
   const [type,setType] = useState<"income"|"payment">(initialType);
   const [amount,setAmount] = useState("");
@@ -26,6 +26,13 @@ const TransactionFormModal = ({onClose,type:initialType}:Props) => {
     return Number(numeric);
   }
 
+  useEffect(()=> {
+    if(slideDirection === 'left'){
+      setAnimeClass('slide-in-left');
+    }else if(slideDirection === 'right'){
+      setAnimeClass('slide-in-right');
+    }
+  },[slideDirection])
   const handleSubmit = async () => {
     const auth = getAuth();
     const currentUser = auth.currentUser;
@@ -48,8 +55,20 @@ const TransactionFormModal = ({onClose,type:initialType}:Props) => {
     }
   };
 
+  const openCategoryModal=()=>{
+    setSlideDirection('left');
+    setView('category');
+  }
+
+  const closeCategoryModal = () =>{
+    setSlideDirection('right')
+    setView('form');
+    }
+
   return (
     <div className="modal-container">
+      {view==='form' && (
+        <div className={`content ${animeClass}`}>
       <div className="radio-group">
         <label>
         <input type="radio" id='income'name="transactionType" value="income" checked={type === 'income'} onChange={() => setType('income')}/>
@@ -60,15 +79,6 @@ const TransactionFormModal = ({onClose,type:initialType}:Props) => {
       </div>
       <div className='input-amount'>
       <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder='金額'/>
-      </div>
-      <div className="select-category">
-      <h2>カテゴリ</h2>
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
-        <option value=""></option>
-        {(type === "income" ? incomeCategories : paymentCategories).map((c)=>(
-        <option key={c} value={c}>{c}</option>
-        ))}
-      </select>
       </div>
       <div className="memo">
       <h2>メモ</h2>
@@ -87,7 +97,21 @@ const TransactionFormModal = ({onClose,type:initialType}:Props) => {
         <input type="radio" id='isnotprivate' name="privateselect" value="isnotprivate" checked={isPrivate} onChange={() => setIsPrivate(true)}/>
         非公開</label>
       </div>
-      <button className='index-button' onClick={handleSubmit}>登録</button>
+      <button className='index-button' onClick={openCategoryModal}>項目を追加</button>
+        </div>
+      )}
+      {view === 'category'&&(
+        <div className={`content ${animeClass}`}>
+          <h1>項目</h1>
+            <input type="text" />
+            <select name="" id="">
+              <option value=""></option>
+            </select>
+            <input type="text" />
+            <button onClick={closeCategoryModal}>戻る</button>
+            <button onClick={handleSubmit}>保存</button>
+        </div>
+      )}
     </div>
   )
 }
