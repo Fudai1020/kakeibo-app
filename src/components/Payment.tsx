@@ -31,7 +31,7 @@ const Payment = ({onAddClick,setModalType,selectedDate}:props) => {
                 const createdAt = data.date?.toDate?.() || new Date()
                 return {
                     amount: typeof data.amount === "number" ? data.amount : 0,
-                    category:data.category ?? "未分類",
+                    category:data.mainCategory ?? "未分類",
                     createdAt,
                 }
               });

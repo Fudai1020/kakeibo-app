@@ -18,6 +18,9 @@ const Home = () => {
   const [savingBalance,setSavingBalance] = useState(0);
   const [selectDate,setSelectDate] = useState(new Date());
   const [transactionTyoe,setTransactionType] = useState<'income' | 'payment'>('income')  
+  const [incomeCategories, setIncomeCategories] = useState<string[]>([]);
+  const [paymentCategories, setPaymentCategories] = useState<string[]>([]);
+
 
   return (
     <div>
@@ -25,7 +28,9 @@ const Home = () => {
     {isopenModal && (
       <Modal onClose={closeModal}>
         {modalType === "transaction" &&(
-        <TransactionFormModal onClose={closeModal} type={transactionTyoe} />
+        <TransactionFormModal 
+        onClose={closeModal} type={transactionTyoe} incomeCategories={incomeCategories} setIncomeCategories={setIncomeCategories}paymentCategories={paymentCategories}
+        setPaymentCategories={setPaymentCategories}/>
         )}
         {modalType === "saving" &&(
           <SavingAllocationModal onClose={closeModal} balance={savingBalance} selectedDate={selectDate}/>
