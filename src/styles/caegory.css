@@ -1,0 +1,42 @@
+.month{
+    margin-top: 20px;
+}
+.category-list{
+    color: white;
+    margin-top: 70px;
+    border: 1px solid black;
+    border-radius: 8px;
+    height: 500px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(58, 106, 153, 0.7);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.category-block {
+    color: white;
+    display: flex;
+    align-items: center; /* 追加 */
+    flex-direction: column;
+    font-size: 20px;
+    border-bottom: 1px solid #ccc;
+}
+.sub-category-item{
+    margin-bottom: 12px;
+    font-size: 18px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+}
+.sub-category-item span.memo-text {
+  display: block;
+  text-align: center;
+  margin-top: 4px;
+}
+.category-block:hover h3 span {
+    display: inline;
+  text-decoration: underline;
+}
