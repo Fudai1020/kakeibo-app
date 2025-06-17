@@ -36,7 +36,44 @@
   text-align: center;
   margin-top: 4px;
 }
-.category-block:hover h3 span {
+.category-title:hover {
     display: inline;
   text-decoration: underline;
+}
+.animated-number {
+  text-decoration: inherit;
+}
+.category-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 16px;
+    position: relative;
+}
+.category-actions{
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+    display:flex;
+    gap: 4px;
+}
+.icon-button{
+    background:none;
+    border: none;
+    color:white;
+    cursor: pointer;
+    font-size: 20px;
+    width: auto;
+    transform: translateY(15%);
+}
+.category-header:hover .category-actions {
+  visibility: visible;
+  opacity: 1;
+}
+.sub-category-item:hover{
+    text-decoration: underline;
+}
+.memo-text:hover{
+    text-decoration: none;
 }

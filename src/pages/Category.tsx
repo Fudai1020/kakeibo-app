@@ -67,7 +67,6 @@ const Category = () => {
       <div className="category-list">
       <CategoryList transactions={transactions} />
       </div>
-      
     </div>
   );
 };
