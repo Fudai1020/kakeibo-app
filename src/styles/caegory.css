@@ -44,19 +44,18 @@
   text-decoration: inherit;
 }
 .category-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 16px;
-    position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+  position: relative;
 }
 .category-actions{
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.1s ease;
-    display:flex;
-    gap: 4px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 80px; 
 }
 .icon-button{
     background:none;
@@ -66,6 +65,7 @@
     font-size: 20px;
     width: auto;
     transform: translateY(15%);
+    padding: auto;
 }
 .category-header:hover .category-actions {
   visibility: visible;
@@ -76,4 +76,25 @@
 }
 .memo-text:hover{
     text-decoration: none;
+}
+.edit-category{
+    width: 120px;
+    height: 30px;
+    border-radius: 3px;
+    border: 1px solid black;
+}
+.edit-buttons{
+  display: flex;
+  flex-direction: row; /* 横並びにする */
+  gap: 8px; /* ボタン間の余白 */
+  align-items: center;
+}
+.icon-buttons{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+.edit-button{
+    width: auto;
+    transform: translateY(15%);
 }
