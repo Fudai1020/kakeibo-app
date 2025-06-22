@@ -14,6 +14,11 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
   const [allocationName,setAllocationName] = useState("");
   const [allocationAmount,setAllocationAmount] = useState("");
   const [isPrivate,setIsPrivate] = useState("");
+      const normalizeAmount = (input: string) => {
+    const half = input.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0)).replace(/ /g, '');
+    const numeric = half.replace(/[^0-9]/g, '');
+    return Number(numeric);
+  };
 
   useEffect(()=>{
 
@@ -52,7 +57,7 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
         const docRef = doc(db,'users',currentUser.uid,'SavingAllocations',item.name)
         return setDoc(docRef,{
           name:item.name,
-          amount:Number(item.amount) || 0,
+          amount:normalizeAmount(item.amount) || 0,
           isPrivate:isPrivate==='非公開',
           createdAt:new Date()
         })

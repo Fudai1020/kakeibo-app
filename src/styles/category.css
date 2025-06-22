@@ -3,18 +3,23 @@
 }
 .category-list{
     color: white;
-    margin-top: 70px;
+    margin-top: 20px;
     border: 1px solid black;
     border-radius: 8px;
-    height: 500px;
-    width: 80%;
+    height: 540px;
+    width: 60%;
     margin-left: auto;
     margin-right: auto;
     background-color: rgba(58, 106, 153, 0.7);
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.overflow-category{
+  height: 450px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 .category-block {
     color: white;
@@ -53,6 +58,7 @@
 }
 .category-actions{
   display: flex;
+  justify-content: space-between;
   gap: 8px;
   align-items: center;
   min-width: 80px; 
@@ -71,9 +77,7 @@
   visibility: visible;
   opacity: 1;
 }
-.sub-category-item:hover{
-    text-decoration: underline;
-}
+
 .memo-text:hover{
     text-decoration: none;
 }
@@ -97,4 +101,87 @@
 .edit-button{
     width: auto;
     transform: translateY(15%);
+}
+.total-amount{
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 18px;
+  z-index: 1000;
+}
+.type-switch {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 20px;
+  margin-top: 30px;
+  font-size: 20px;
+  color: white;
+}
+.radio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.radio-wrapper input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: relative;
+}
+.radio-wrapper input[type="radio"]:checked::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 3px;
+  left: 3px;
+  background-color: white;
+  border-radius: 50%;
+}
+.subicon-buttons{
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+.subicon-button{
+  width: auto;
+  margin: 0;
+  padding: auto;
+  background:none;
+  font-size: 15px;
+}
+.edit-subcategory{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.edit-subcategory input {
+  width: 80px;
+  height: 30px;
+  text-align: center;
+}
+.subEdit-buttons{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.subEdit-buttons button{
+  width: auto;
+  margin: 0;
+}
+.input-row{
+  display: flex;
+  align-items: center;
+}
+.edit-memo{
+  display: flex;
+  justify-content: center;
 }

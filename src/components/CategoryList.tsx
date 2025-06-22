@@ -99,9 +99,11 @@ const CategoryList = ({ transactions }: Props) => {
     setEditCategory(null);
     setNewCategory('');
   }
+  const totalAmount = transactions.reduce((sum,item) => sum + item.amount,0);
+
 
   return (
-    <div>
+    <div className="overflow-category">
       {Object.entries(grouped).map(([mainCategory, subTransactions]) => {
         const total = subTransactions.reduce((sum, item) => sum + item.amount, 0);
         return (
@@ -153,6 +155,9 @@ const CategoryList = ({ transactions }: Props) => {
           </div>
         );
       })}
+    <div className="total-amount">
+      <h1>合計：<AnimateNumber value={totalAmount}/></h1>
+      </div>
     </div>
   );
 };

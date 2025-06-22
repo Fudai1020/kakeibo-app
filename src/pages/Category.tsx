@@ -5,7 +5,7 @@ import CategoryList from "../components/CategoryList";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../firebase/firebase";
-import '../styles/caegory.css'
+import '../styles/category.css'
 type Transaction = {
   id: string;
   amount: number;
@@ -63,7 +63,20 @@ const Category = () => {
       <Header />
    
       <MonthNavigate date={date} setDate={setDate}/>
-      
+      <div className="type-switch">
+        <label className="radio-wrapper">
+        <input type="radio" name="type" value="income" checked={type==='income'} onChange={()=>setType('income')}/>
+        <span className="custom-radio"></span>
+          収入
+        </label>
+
+        <label className="radio-wrapper">
+          <input type="radio" name="type" value="payment" checked={type==='payment'} onChange={()=> setType('payment')} />
+          <span className="custom-radio"></span>
+          支出
+        </label>
+      </div>
+
       <div className="category-list">
       <CategoryList transactions={transactions} />
       </div>
