@@ -31,7 +31,7 @@ const Login = () => {
       
       <img src={logo} alt="logo" className='login-logo'/>
       <div className='gap-group'>
-      <input type='text'  className='login-input' placeholder='メールアドレス' value={email}
+      <input type='mail'  className='login-input' placeholder='メールアドレス' value={email}
       onChange={(e) => setEmail(e.target.value)}/>
       <div style={{position:'relative'}}>
       <input type={showPassword ? 'text':'password'}  
