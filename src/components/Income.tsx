@@ -1,8 +1,9 @@
-type props = {
-  onAddClick:() =>void;
-  setModalType:React.Dispatch<React.SetStateAction<"transaction" | "saving" | null>>;
-  selectedDate:Date;
-}
+type Props = {
+  onAddClick: () => void;
+  setModalType: React.Dispatch<React.SetStateAction<"transaction" | "saving" | null>>;
+  selectedDate: Date;
+  sharedWith: string | null; // 👈 追加
+};
 
 import { useEffect, useState } from 'react';
 import '../styles/income.css'
@@ -11,54 +12,93 @@ import { db } from '../firebase/firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import AnimateNumber from './AnimateNumber';
 
-const income = ({onAddClick,setModalType,selectedDate}:props) => {
-  const [total,setTotal] = useState(0);
-  useEffect(()=>{
-    const auth = getAuth();
-    const unsubscribeAuth = onAuthStateChanged(auth,(user)=>{
+const Income = ({ onAddClick, setModalType, selectedDate, sharedWith }: Props) => {
+  const [total, setTotal] = useState(0);
 
-      if(user){
-    const q  = query(
-      collection(db,"users",user.uid,"transactions"),
-      where("type","==","income")
+  useEffect(() => {
+    
+  const auth = getAuth();
+  let unsubMy = () => {};
+  let unsubPartner = () => {};
+
+  const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+    if (!user) return;
+    const currentUid = user.uid;
+
+    const myRef = query(
+      collection(db, "users", currentUid, "transactions"),
+      where("type", "==", "income")
     );
 
-    const unsubscribe = onSnapshot(q,(snapshot)=>{
-      const incomeAmounts = snapshot.docs.map((doc)=>{
-        const data =doc.data();
-        const createdAt = data.date?.toDate?.() || new Date();
+    unsubMy = onSnapshot(myRef, (mySnap) =>   {
+      const myData = mySnap.docs.map((doc) => doc.data());
 
-        if(
-          createdAt.getFullYear() === selectedDate.getFullYear() &&
-          createdAt.getMonth() === selectedDate.getMonth()
-        ){
-        return  typeof data.amount === "number" ? data.amount : 0 
-        }else{
-          return 0
-        }
-      });
+      // 👇 相手のデータはここでしか購読しないようにする
+      if (sharedWith && sharedWith !== currentUid) {
+        const partnerRef = query(
+          collection(db, "users", sharedWith, "transactions"),
+          where("type", "==", "income"),
+          where("isPrivate", "==", false)
+        );
 
-      const totalIncome = incomeAmounts.reduce((sum,amount)=> sum+amount,0);
-      setTotal(totalIncome);
-    })
-    return () => unsubscribe();
-    }
-    })
-    return ()=> unsubscribeAuth();
-    
-  },[selectedDate]);
+        unsubPartner = onSnapshot(partnerRef, (partnerSnap) => {
+          const partnerData = partnerSnap.docs.map((doc) => doc.data());
+            console.log("✅ 相手の取得データ:", partnerData); 
+          const all = [...myData, ...partnerData].filter((d) => {
+            const createdAt = d.date?.toDate?.() || new Date();
+            return (
+              createdAt.getFullYear() === selectedDate.getFullYear() &&
+              createdAt.getMonth() === selectedDate.getMonth()
+            );
+          });
 
-  const handleClick = () =>{
-    setModalType("transaction")
+          const totalIncome = all.reduce(
+            (sum, d) => sum + (typeof d.amount === "number" ? d.amount : 0),
+            0
+          );
+
+          setTotal(totalIncome);
+        });
+      } else {
+        // 相手なし
+        const filtered = myData.filter((d) => {
+          const createdAt = d.date?.toDate?.() || new Date();
+          return (
+            createdAt.getFullYear() === selectedDate.getFullYear() &&
+            createdAt.getMonth() === selectedDate.getMonth()
+          );
+        });
+
+        const totalIncome = filtered.reduce(
+          (sum, d) => sum + (typeof d.amount === "number" ? d.amount : 0),
+          0
+        );
+
+        setTotal(totalIncome);
+      }
+    });
+  });
+
+  return () => {
+    unsubMy();
+    unsubPartner();
+    unsubscribeAuth();
+  };
+}, [selectedDate, sharedWith]);
+
+
+  const handleClick = () => {
+    setModalType("transaction");
     onAddClick();
-  }
+  };
+
   return (
     <div className="income-box">
-        <h1>今月の収入</h1>
-        <h2><AnimateNumber value={total} /></h2>
-        <button onClick={handleClick}>収入を追加</button>
+      <h1>今月の収入</h1>
+      <h2><AnimateNumber value={total} /></h2>
+      <button onClick={handleClick}>収入を追加</button>
     </div>
-  )
-}
+  );
+};
 
-export default income
+export default Income;

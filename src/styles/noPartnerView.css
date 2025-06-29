@@ -6,8 +6,10 @@ margin-top: 10%;
 }
 .no-partner-view input{
     width: 150px;
-    height: 30px;
+    height: 35px;
     text-align: center;
+    font-weight: bold;
+    font-size: 16px;
 }
 .keyword {
   font-size: 1.5rem;
@@ -18,4 +20,7 @@ margin-top: 10%;
 .error-text {
   color: red;
   margin-top: 0.5rem;
+}
+.buttons{
+    margin-top: 20px;
 }

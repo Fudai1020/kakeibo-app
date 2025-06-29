@@ -22,9 +22,7 @@ const Shared = () => {
       setLoading(false);
       return;
     }
-      
-    
-
+  
     const userDocRef = doc(db, 'users', user.uid);
 
     const unsubscribeUser = onSnapshot(userDocRef, (userSnap) => {
@@ -60,7 +58,7 @@ const Shared = () => {
     return () => unsubscribeAuth();
   }, []);
 
-  if (loading) return <p>読み込み中...</p>;
+  if (loading) return <p style={{color:"white",textAlign:'center',marginTop:50}}>読み込み中...</p>;
 
   return (
     <div>

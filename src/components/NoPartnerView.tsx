@@ -53,8 +53,8 @@ const NoPartnerView = ({onShareSuccess}:props) => {
 
     // 相手のUID取得
     const partnerUid = data.userA;
-      console.log("自分のUID:", user.uid);
-  console.log("相手のUID:", partnerUid);
+    console.log("自分のUID:", user.uid);
+    console.log("相手のUID:", partnerUid);
 
   if (partnerUid === user.uid) {
     setError("自分自身とは共有できません。");
@@ -93,7 +93,7 @@ const NoPartnerView = ({onShareSuccess}:props) => {
 
       {mode === "start" && (
         <div className="share-start">
-          <p>この合言葉を相手に伝えてください：</p>
+          <p style={{fontWeight:'bold',fontSize:20}}>この合言葉を相手に伝えてください：</p>
           <h3 className="keyword">{keyword}</h3>
           <button onClick={handleBack}>戻る</button>
         </div>
@@ -101,14 +101,15 @@ const NoPartnerView = ({onShareSuccess}:props) => {
 
       {mode === "join" && (
         <div className="share-join">
-          <p>相手から教えてもらった合言葉を入力してください：</p>
+          <p style={{fontWeight:'bold',fontSize:20}}>相手から教えてもらった合言葉を入力してください</p>
           <input
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="例: mint256"
           />
+          <div className='buttons'>
           <button onClick={handleJoinSharing}>共有に参加</button>
           <button onClick={handleBack}>戻る</button>
+          </div>
           {error && <p className="error-text">{error}</p>}
         </div>
       )}

@@ -101,8 +101,8 @@ const SubCategory = ({ subTransactions }: SubCategoryProps) => {
             </div>
             </div>
           ):(
-            <>
-            <span>{item.subCategory}・・・<AnimateNumber value={item.amount} />円</span>
+            <div>
+            <span className='subcategory-list'>{item.subCategory}・・・<AnimateNumber value={item.amount} />円</span>
             <span className="memo-text">{item.memo? item.memo:'メモなし'}</span>
             <div className='subicon-buttons'>
             <button className='subicon-button' onClick={()=>handleEditClick(item)} >
@@ -112,7 +112,7 @@ const SubCategory = ({ subTransactions }: SubCategoryProps) => {
                 <FaTrash />
             </button>
             </div>
-            </>
+          </div>
           )}
         </li>
       ))}

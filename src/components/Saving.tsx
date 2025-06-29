@@ -3,6 +3,7 @@ type props = {
   setModalType:React.Dispatch<React.SetStateAction<"transaction" | "saving" | null>>;
   onBalanceChange:(balance:number) => void;
   selectedDate:Date;
+  sharedWith:string|null;
 }
 import { useEffect, useState } from 'react';
 import '../styles/saving.css' 
@@ -11,7 +12,7 @@ import { db } from '../firebase/firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import AnimateNumber from './AnimateNumber';
 
-const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate}:props) => {
+const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate,sharedWith}:props) => {
   const [savingTotal,setSavingTotal] = useState(0);
   const [savingAllocations,setSavingAllocations] = useState<{name:string,amount:number}[]>([]);
 

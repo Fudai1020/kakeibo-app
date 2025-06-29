@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Header from "../components/Header"
 import Income from "../components/Income"
 import MonthNavigate from "../components/MonthNavigate"
@@ -8,6 +8,9 @@ import "../styles/home.css"
 import TransactionFormModal from "../components/TransactionFormModal"
 import { Modal } from "../components/Modal"
 import SavingAllocationModal from "../components/SavingAllocationModal"
+import { getAuth, onAuthStateChanged, type User } from "firebase/auth"
+import { doc, onSnapshot } from "firebase/firestore"
+import { db } from "../firebase/firebase"
 
 
 const Home = () => {
@@ -20,7 +23,24 @@ const Home = () => {
   const [transactionTyoe,setTransactionType] = useState<'income' | 'payment'>('income')  
   const [incomeCategories, setIncomeCategories] = useState<string[]>([]);
   const [paymentCategories, setPaymentCategories] = useState<string[]>([]);
+  const [sharedWith,setSharedWith] = useState<string|null>(null);
+  const [currentUser,setCurrentUser] = useState<User|null>(null);
 
+  useEffect(()=>{
+    const auth = getAuth();
+    const unsubscribeAuth = onAuthStateChanged(auth,(user)=>{
+      if(!user) return;
+      setCurrentUser(user);
+
+      const userDocRef = doc(db,'users',user.uid);
+      const unsubscribeUser = onSnapshot(userDocRef,(snap)=>{
+        const data = snap.data();
+        setSharedWith(data?.sharedWith || null);  
+      });
+      return ()   => unsubscribeUser();
+    });
+    return ()=> unsubscribeAuth();
+  },[]);
 
   return (
     <div>
@@ -41,13 +61,13 @@ const Home = () => {
       <MonthNavigate date={selectDate} setDate={setSelectDate} />
       </div>
       <div className="income-layout">
-      <Income onAddClick={()=>{setTransactionType('income');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate}/>
+      <Income onAddClick={()=>{setTransactionType('income');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith}/>
       </div>
       <div className="saving-layout">
-      <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance} selectedDate={selectDate}/>
+      <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance} selectedDate={selectDate} sharedWith={sharedWith}/>
       </div>
       <div className="payment-layout">
-      <Payment onAddClick={()=>{setTransactionType('payment');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate}/>
+      <Payment onAddClick={()=>{setTransactionType('payment');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith}/>
       </div>
     </div>
   )
