@@ -17,6 +17,12 @@
       text-decoration: underline;
       cursor: pointer;
 }
+.settings a{
+    text-decoration: none;
+}
+.settings a:visited{
+  color: inherit;
+}
 .notification{
     display: flex;
     justify-content: center;

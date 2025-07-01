@@ -53,6 +53,7 @@ const TransactionFormModal = ({
         memo,
         date: new Date(date),
         isPrivate,
+        uid:currentUser.uid,
       });
       alert('登録完了！');
       onClose();

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../styles/settingmodal.css'
 
 const SettingModal = () => {
@@ -11,7 +11,7 @@ const SettingModal = () => {
         <div className="settings">
             <h1>設定</h1>
             <h2>プロフィールを編集する</h2>
-            <h2>パスワードを変更する</h2>
+            <Link to={('/ChangePassword')}><h2>パスワードを変更する</h2></Link>
         </div>
         <div className="notification">
         <h1>通知設定</h1>

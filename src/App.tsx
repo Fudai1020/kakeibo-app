@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Category from './pages/Category'
 import Shared from './pages/Shared'
 import UserProfile from './pages/UserProfile'
+import ChangePassword from './pages/ChangePassword'
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
       <Route path="/category" element={<Category  />} />
       <Route path="/shared" element={<Shared />} />
       <Route path="/userProfile" element={<UserProfile />} />
+      <Route path="/ChangePassword" element={<ChangePassword />} />
       </Routes>
     
   )

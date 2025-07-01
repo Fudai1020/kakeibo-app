@@ -25,22 +25,41 @@ const Home = () => {
   const [paymentCategories, setPaymentCategories] = useState<string[]>([]);
   const [sharedWith,setSharedWith] = useState<string|null>(null);
   const [currentUser,setCurrentUser] = useState<User|null>(null);
+  const [partnerName,setPartnerName] = useState<string|null>(null);
 
   useEffect(()=>{
     const auth = getAuth();
+    let unsubscribeUser = () => {};
+    let unsubscribePartner = () =>{};
+
     const unsubscribeAuth = onAuthStateChanged(auth,(user)=>{
       if(!user) return;
       setCurrentUser(user);
 
       const userDocRef = doc(db,'users',user.uid);
-      const unsubscribeUser = onSnapshot(userDocRef,(snap)=>{
+       unsubscribeUser = onSnapshot(userDocRef,(snap)=>{
         const data = snap.data();
-        setSharedWith(data?.sharedWith || null);  
-      });
-      return ()   => unsubscribeUser();
+        const partnerUid = data?.sharedWith || null;
+        setSharedWith(partnerUid);  
+
+      if(partnerUid){
+        const partnerRef = doc(db,'users',partnerUid);
+         unsubscribePartner = onSnapshot(partnerRef,(partnerSnap)=>{
+          const partnerData = partnerSnap.data();
+          setPartnerName(partnerData?.name||'相手');
+        });
+      }else{
+        setPartnerName(null);
+      }
     });
-    return ()=> unsubscribeAuth();
+  });
+    return ()=> {
+      unsubscribeAuth();
+      unsubscribePartner();
+      unsubscribeUser();
+    }
   },[]);
+
 
   return (
     <div>
@@ -64,10 +83,11 @@ const Home = () => {
       <Income onAddClick={()=>{setTransactionType('income');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith}/>
       </div>
       <div className="saving-layout">
-      <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance} selectedDate={selectDate} sharedWith={sharedWith}/>
+      <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance} selectedDate={selectDate} sharedWith={sharedWith} />
       </div>
       <div className="payment-layout">
-      <Payment onAddClick={()=>{setTransactionType('payment');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith}/>
+      <Payment onAddClick={()=>{setTransactionType('payment');setModalType("transaction");openModal();}} 
+      setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} partnerName={partnerName}/>
       </div>
     </div>
   )

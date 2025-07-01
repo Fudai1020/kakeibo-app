@@ -11,9 +11,10 @@ type Props = {
   setModalType: React.Dispatch<React.SetStateAction<"transaction" | "saving" | null>>;
   selectedDate: Date;
   sharedWith: string | null;
+  partnerName:string|null;
 };
 
-const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith }: Props) => {
+const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerName }: Props) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [categoryTotals, setCategoryTotals] = useState<{
     [key: string]: { amount: number; isMine: boolean }[];
@@ -113,8 +114,8 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith }: Props) 
                   const isMine = items.every(item => item.isMine);
 
                   return (
-                    <li key={category} style={{ color: isMine ? 'white' : 'gray' }}>
-                      {category}・・・<AnimateNumber value={total} />
+                    <li key={category} style={{ color: isMine ? 'white' : 'red' }}>
+                      {category}・・・<AnimateNumber value={total} />{isMine && partnerName ? '':`(${partnerName})`}
                     </li>
                   );
                 })}
