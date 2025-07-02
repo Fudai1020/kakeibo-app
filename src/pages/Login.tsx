@@ -46,7 +46,7 @@ const Login = () => {
             cursor: 'pointer',}}
           >
         {showPassword ? <AiOutlineEyeInvisible className='eye-icon' style={{fontSize:'24px'}}/> : <AiOutlineEye className='eye-icon' style={{fontSize:'24px'}}/>}
-      </div>
+        </div>
       </div>
       <p className="register-text">
           アカウントが未登録ですか？ <Link to="/Register">アカウントの作成</Link>
