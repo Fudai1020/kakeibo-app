@@ -115,7 +115,7 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
 
                   return (
                     <li key={category} style={{ color: isMine ? 'white' : 'red' }}>
-                      {category}・・・<AnimateNumber value={total} />{isMine && partnerName ? '':`(${partnerName})`}
+                      {category}・・・<AnimateNumber value={total} />{isMine && partnerName ? `(${partnerName})`:''}
                     </li>
                   );
                 })}
