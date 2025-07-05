@@ -90,7 +90,7 @@ const SubCategory = ({ subTransactions }: SubCategoryProps) => {
               <input type='text' value={editAmount}
                 onChange={(e) => setEditAmount(e.target.value)} />
               </div>
-              <div className='edit-memo'>
+              <div className='edit-category-memo'>
               <input value={editMemo}
                 onChange={(e) => setEditMemo(e.target.value)} />
                 </div>

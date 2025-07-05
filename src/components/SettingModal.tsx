@@ -10,7 +10,7 @@ const SettingModal = () => {
     <div className="side-contain">
         <div className="settings">
             <h1>設定</h1>
-            <h2>プロフィールを編集する</h2>
+            <Link to={('/editProfile')}><h2>プロフィールを編集する</h2></Link>
             <Link to={('/ChangePassword')}><h2>パスワードを変更する</h2></Link>
         </div>
         <div className="notification">
