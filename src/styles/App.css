@@ -27,3 +27,19 @@ button:hover{
 .eye-icon:hover {
     background-color: rgba(58,85,153,1);
 }
+::-webkit-scrollbar{
+  background: rgba(58, 106, 153, 0.5);
+    width: 10px;
+}   
+::-webkit-scrollbar-track{
+
+}
+::-webkit-scrollbar-thumb{
+    background-color: rgba(230, 230, 230, 0.7);
+    border-radius: 8px;
+    min-height:10px;
+}
+::-webkit-scrollbar-thumb:hover{
+    background-color: rgba(230, 230, 230, 1);
+
+}

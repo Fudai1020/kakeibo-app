@@ -26,7 +26,9 @@
 }
 .chart{
     height: 300px;
-    width: 100%;
+    width: 90%;
+    transform: translateY(15px);
+    border: 2px solid black;
 }
 .centered{
     width: 100%;

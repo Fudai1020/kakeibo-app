@@ -156,7 +156,7 @@ const CategoryList = ({ transactions }: Props) => {
         );
       })}
     <div className="total-amount">
-      <h1>合計：<AnimateNumber value={totalAmount}/></h1>
+      <h2>合計：<AnimateNumber value={totalAmount}/></h2>
       </div>
     </div>
   );

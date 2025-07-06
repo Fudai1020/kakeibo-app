@@ -14,6 +14,7 @@
     height: 40px;
     text-align: center;
     color: rgba(255, 255, 255, 1);
+    font-size: 18px;
 }
 .radio-group input[type="radio"] {
   transform: scale(2); /* 2倍の大きさにする */
@@ -51,6 +52,7 @@
     color: white;
     font-size: 20px;
     text-align: center;
+    padding-top: 10px;
 }
 .memo h2{
     margin-top: 15px;
@@ -116,6 +118,7 @@
     margin-bottom:30px;
     text-align: center;
     font: bold;
+    font-size: 20px;
 }
 .input-category h2{
     margin-bottom:0px;
@@ -157,4 +160,5 @@
     width: 200px;
     height: 45px;
     text-align: center;
+    font-size: 18px;
 }
