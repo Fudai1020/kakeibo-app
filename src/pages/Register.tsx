@@ -15,6 +15,14 @@ const register = () => {
     const [showPassword,setShowPassword] = useState(false);
 
     const handleRegister = async() => {
+      if(!email || !password){
+      alert('メールアドレスとパスワードを入力してください');
+      return;
+    }
+    if(!email.includes('@')){
+      alert('有効なメールアドレスを入力してください');
+      return;
+    }
 
 
         if(password != confirmPassword){
@@ -44,7 +52,7 @@ const register = () => {
       
       <img src={logo} alt="logo" className='login-logo'/>
       <div className='gap-group'>
-      <input type="text"  className='login-input' placeholder='メールアドレス' value={email} 
+      <input type="email"  className='login-input' placeholder='メールアドレス' value={email} 
       onChange={(e) => setEmail(e.target.value)}/>
       <div style={{position:'relative'}}>
       <input type={showPassword ? 'text':'password'}  

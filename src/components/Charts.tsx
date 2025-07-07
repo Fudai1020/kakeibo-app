@@ -4,7 +4,7 @@ type props={
     paymentData:{category:string;amount:number}[]
 }
 const COLORS = [
-  '#8884d8', '#82ca9d', '#ffc658', '#ff7f50',
+  '#e0ffff', '#48d1cc', '#ffc658', '#ff7f50',
   '#a4de6c', '#d0ed57', '#8dd1e1', '#ffbb28',
 ];
 

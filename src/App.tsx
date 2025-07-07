@@ -9,6 +9,7 @@ import Shared from './pages/Shared'
 import UserProfile from './pages/UserProfile'
 import ChangePassword from './pages/ChangePassword'
 import EditProfile from './pages/EditProfile'
+import PrivateRoute from './components/PrivateRoute'
 
 
 function App() {
@@ -17,15 +18,45 @@ function App() {
   return (
 
       <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/Register" element={<Register />} /> 
-      <Route path="/Home" element={<Home />} />
-      <Route path="/category" element={<Category  />} />
-      <Route path="/shared" element={<Shared />} />
-      <Route path="/userProfile" element={<UserProfile />} />
-      <Route path="/ChangePassword" element={<ChangePassword />} />
-      <Route path="/editProfile" element={<EditProfile />} />
-      </Routes>
+  <Route path="/" element={<Login />} />
+  <Route path="/register" element={<Register />} />
+  
+  <Route path="/home" element={
+    <PrivateRoute>
+      <Home />
+    </PrivateRoute>
+  } />
+
+  <Route path="/category" element={
+    <PrivateRoute>
+      <Category />
+    </PrivateRoute>
+  } />
+
+  <Route path="/shared" element={
+    <PrivateRoute>
+      <Shared />
+    </PrivateRoute>
+  } />
+
+  <Route path="/userProfile" element={
+    <PrivateRoute>
+      <UserProfile />
+    </PrivateRoute>
+  } />
+
+  <Route path="/changePassword" element={
+    <PrivateRoute>
+      <ChangePassword />
+    </PrivateRoute>
+  } />
+
+  <Route path="/editProfile" element={
+    <PrivateRoute>
+      <EditProfile />
+    </PrivateRoute>
+  } />
+</Routes>
     
   )
 }

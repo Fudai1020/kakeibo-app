@@ -13,6 +13,15 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin =async () => {
+    if(!email || !password){
+      alert('メールアドレスとパスワードを入力してください');
+      return;
+    }
+    if(!email.includes('@')){
+      alert('有効なメールアドレスを入力してください');
+      return;
+    }
+
     try{
       const userCrendential = await signInWithEmailAndPassword(auth,email,password);
       console.log('ログイン成功',userCrendential.user);
@@ -31,7 +40,7 @@ const Login = () => {
       
       <img src={logo} alt="logo" className='login-logo'/>
       <div className='gap-group'>
-      <input type='mail'  className='login-input' placeholder='メールアドレス' value={email}
+      <input type='email'  className='login-input' placeholder='メールアドレス' value={email}
       onChange={(e) => setEmail(e.target.value)}/>
       <div style={{position:'relative'}}>
       <input type={showPassword ? 'text':'password'}  

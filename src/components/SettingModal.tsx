@@ -1,10 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom'
 import '../styles/settingmodal.css'
+import { getAuth, signOut } from 'firebase/auth';
 
 const SettingModal = () => {
   const navigate = useNavigate();
-  const logout = () =>{
-    navigate('/')
+  const logout = async() =>{
+    const auth = getAuth();
+    try{
+      await signOut(auth);
+      navigate('/');
+    }catch(error){
+      console.error('失敗',error);
+    }
   }
   return (
     <div className="side-contain">
