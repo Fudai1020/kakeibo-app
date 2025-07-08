@@ -190,3 +190,38 @@
   font-weight: bold;
   font-size: 20px;
 }
+.category-month{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.month-navigate{
+  align-items: center;
+}
+@media(max-width:768px){
+  .category-list{
+    max-width: 380px;
+    width: 100%;
+  }
+   .total-amount {
+    position: static;
+    transform: none;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .category-block {
+  font-size: 16px; /* 例: 20px → 16px に縮小 */
+}
+
+.sub-category-item {
+  font-size: 14px;
+}
+
+.type-switch {
+  font-size: 16px;
+}
+
+.total-amount {
+  font-size: 14px;
+}
+}

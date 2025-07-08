@@ -3,8 +3,8 @@
     padding: 16px;
     border-radius: 8px;
     background-color: rgba(58, 106, 153, 0.7);
-    width: 400px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 400px;
     text-align: center;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -12,4 +12,10 @@
 }
 button{
     width: 200px;
+}
+@media(max-width:768px){
+    .income-box{
+        max-width: 380px;
+        width: 100%;
+    }
 }

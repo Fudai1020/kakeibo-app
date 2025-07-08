@@ -76,18 +76,24 @@ const Home = () => {
         )}
       </Modal>
     )}
+    <div className="home-layout">
       <div className="month-layout">
       <MonthNavigate date={selectDate} setDate={setSelectDate} />
       </div>
-      <div className="income-layout">
-      <Income onAddClick={()=>{setTransactionType('income');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith}/>
+      <div className="main-content">
+        <div className="left-section">
+          <div className="income-layout">
+            <Income onAddClick={()=>{setTransactionType('income');setModalType("transaction");openModal();}} setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith}/>
+          </div>
+          <div className="saving-layout">
+          <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance} selectedDate={selectDate} sharedWith={sharedWith} />
+          </div>
+        </div>  
+        <div className="payment-layout">
+          <Payment onAddClick={()=>{setTransactionType('payment');setModalType("transaction");openModal();}} 
+            setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} partnerName={partnerName}/>
+        </div>
       </div>
-      <div className="saving-layout">
-      <Saving onAddClick={openModal} setModalType={setModalType} onBalanceChange={setSavingBalance} selectedDate={selectDate} sharedWith={sharedWith} />
-      </div>
-      <div className="payment-layout">
-      <Payment onAddClick={()=>{setTransactionType('payment');setModalType("transaction");openModal();}} 
-      setModalType={setModalType} selectedDate={selectDate} sharedWith={sharedWith} partnerName={partnerName}/>
       </div>
     </div>
   )

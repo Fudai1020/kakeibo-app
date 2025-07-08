@@ -32,8 +32,8 @@ const Header = () => {
         <Link to='/Category' className='link-style'><h1>カテゴリ別</h1></Link>
         </div>
         <div className='icons'>
-        <Link to="/userProfile" className='logo-link'><UserCircle2 className='logo-hover' size={47} style={{verticalAlign:'middle',marginRight:'30px'}}/></Link>
-        <Settings className='logo-hover' size={45} style={{verticalAlign:'middle'}} onClick={openModal}/>
+        <Link to="/userProfile" className='logo-link'><UserCircle2 className='logo-hover user-icon'  style={{verticalAlign:'middle',marginRight:'30px'}}/></Link>
+        <Settings className='logo-hover settings-icon' style={{verticalAlign:'middle'}} onClick={openModal}/>
         </div>
         </div>
         {isvisible &&(

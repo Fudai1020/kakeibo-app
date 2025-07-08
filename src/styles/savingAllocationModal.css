@@ -87,3 +87,34 @@
   cursor: pointer;
 transform: translateX(-20px);
 }
+@media(max-width:768px){
+    .allocation-item {
+
+    align-items: flex-start;
+    padding: 8px 4px;
+    gap: 4px;
+  }
+  .allocation-name {
+    margin-left: 20px;
+    white-space: normal; /* モバイル時は折り返してもOKにする */
+    text-align: left;
+    margin-right: 0;
+  }
+
+  .allocation-input {
+    width: 100%;
+    max-width: 150px;
+    margin-right: 10px;
+  }
+
+  .saving-delete {
+    transform: translateY(-15px);
+    margin-right: 5px;
+  }
+    .saving-container h1{
+        font-size: 24px;
+    }
+    .saving-container h2{
+        font-size: 20px;
+    }
+}

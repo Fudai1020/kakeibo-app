@@ -31,3 +31,9 @@
 .Saving-button{
    margin-top: auto;
 }
+@media(max-width:768px){
+    .saving-box{
+        width: 100%;
+        max-width: 380px;
+    }
+}

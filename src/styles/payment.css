@@ -3,7 +3,8 @@
     border-radius: 8px;
     padding: 16px;
     background-color: rgba(58, 106, 153, 0.7);
-    width: 900px;
+    width: 100%;
+    max-width: 1200px;
     height: 550px;
     text-align: center;
     color: white;
@@ -53,4 +54,28 @@
     margin-top: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
+}
+@media(max-width:768px){
+
+    .container{
+        flex-direction: column;
+    }
+    .left,.right{
+        width: 100%;
+        margin-bottom: 20px;
+        flex-direction: column;
+    }
+    .chart{
+        width: 100%;
+        height: auto;
+    }
+    .category-box{
+        height: auto;
+        max-height: 400px;
+    }
+   .payment-box{
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+   }
 }

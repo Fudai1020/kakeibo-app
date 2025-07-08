@@ -61,8 +61,9 @@ const Category = () => {
   return (
     <div>
       <Header />
-   
+      <div className="category-month">
       <MonthNavigate date={date} setDate={setDate}/>
+      </div>
       <div className="type-switch">
         <label className="radio-wrapper">
         <input type="radio" name="type" value="income" checked={type==='income'} onChange={()=>setType('income')}/>
