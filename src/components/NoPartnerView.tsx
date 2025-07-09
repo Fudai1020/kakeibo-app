@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { db } from "../firebase/firebase";
-import {  doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {  doc, getDoc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import '../styles/noPartnerView.css'
 type props = {
@@ -65,12 +65,15 @@ const NoPartnerView = ({onShareSuccess}:props) => {
     await Promise.all([
       updateDoc(doc(db, "users", user.uid), {
         sharedWith: partnerUid,
+        sharedAt:Timestamp.now(),
       }),
       updateDoc(doc(db, "users", partnerUid), {
         sharedWith: user.uid,
+        sharedAt:Timestamp.now(),
       }),
       updateDoc(pairRef, {
         userB: user.uid,
+        startedAt:Timestamp.now(),
       }),
     ]);
 

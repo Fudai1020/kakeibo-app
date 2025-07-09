@@ -14,6 +14,8 @@ const PartnerProfile = ({ partnerUid }: Props) => {
     name?: string;
     email?: string;
     photoURL?: string;
+    memo?:string;
+    sharedAt?:Date;
   } | null>(null);
   const navigate = useNavigate();
   const auth = getAuth();
@@ -30,8 +32,8 @@ const PartnerProfile = ({ partnerUid }: Props) => {
         const partnerDocRef = doc(db,'users',partnerUid);
 
         await Promise.all([
-            updateDoc(myDocRef,{sharedWith:deleteField()}),
-            updateDoc(partnerDocRef,{sharedWith:deleteField()})
+            updateDoc(myDocRef,{sharedWith:deleteField(),sharedAt:deleteField()}),
+            updateDoc(partnerDocRef,{sharedWith:deleteField(),sharedAt:deleteField()})
         ]);
 
         navigate('/shared')
@@ -45,7 +47,11 @@ const PartnerProfile = ({ partnerUid }: Props) => {
       const docRef = doc(db, 'users', partnerUid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        setPartnerData(docSnap.data());
+        const data = docSnap.data();
+        setPartnerData({
+          ...data,
+          sharedAt:data.sharedAt?.toDate?.() ?? undefined, 
+        });
       } else {
         setPartnerData(null);
       }
@@ -62,6 +68,8 @@ const PartnerProfile = ({ partnerUid }: Props) => {
       </div>
       <h2>{partnerData?.name || 'NoName'}</h2>
       <h2>{partnerData?.email || 'メール未設定'}</h2>
+      <h2>共有開始日:{partnerData?.sharedAt?.toLocaleDateString() }</h2>
+      <h2>{partnerData?.memo||'メモなし'}</h2>
       <button onClick={stopShare}>共有をやめる</button>
     </div>
   );
