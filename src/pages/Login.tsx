@@ -12,22 +12,27 @@ const Login = () => {
   const [showPassword,setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  //ログイン処理  
   const handleLogin =async () => {
+    //入力チェック：メールアドレスかパスワードが未入力の場合アラート出して中断
     if(!email || !password){
       alert('メールアドレスとパスワードを入力してください');
       return;
     }
+    //入力チェック：メールアドレス内に＠が含まれていない場合アラート出して中断
     if(!email.includes('@')){
       alert('有効なメールアドレスを入力してください');
       return;
     }
-
+    //ログイン処理、エラーの場合アラートで返す
     try{
+      //Firebaseの認証機能を使ってログイン処理
       const userCrendential = await signInWithEmailAndPassword(auth,email,password);
       console.log('ログイン成功',userCrendential.user);
-
+      //ホーム画面に遷移
       navigate('/Home')
     }catch(error){
+      //ログイン失敗時のエラー処理
       console.error('ログイン失敗',error);
       alert("メールアドレスまたはパスワードが間違っています");
     }
@@ -54,6 +59,7 @@ const Login = () => {
             transform: 'translateY(-50%)',
             cursor: 'pointer',}}
           >
+          {/*パスワード表示・非表示の切り替えアイコン */}
         {showPassword ? <AiOutlineEyeInvisible className='eye-icon' style={{fontSize:'24px'}}/> : <AiOutlineEye className='eye-icon' style={{fontSize:'24px'}}/>}
         </div>
       </div>

@@ -14,33 +14,39 @@ const register = () => {
     const navigate = useNavigate();
     const [showPassword,setShowPassword] = useState(false);
 
+    //メールアドレス・パスワード登録処理
     const handleRegister = async() => {
+      //メールアドレスかパスワードが空欄の場合アラート出して処理を中断
       if(!email || !password){
       alert('メールアドレスとパスワードを入力してください');
       return;
     }
+    //メールアドレスに＠が含まれていない場合アラート出して処理を中断
     if(!email.includes('@')){
       alert('有効なメールアドレスを入力してください');
       return;
     }
 
-
+    //パスワードと再入力したパスワードが一致していなければアラート出して処理を中断
         if(password != confirmPassword){
             alert('パスワードが一致していません');
             return;
         }
+        //登録処理
         try{
+          //Firebaseの認証機能を使用してログイン、メールアドレスを登録
             const userCrendential = await createUserWithEmailAndPassword(auth,email,password)
             const user = userCrendential.user;
-
-            await setDoc(doc(db,'users',user.uid),{
+          //Firebaseのusersコレクションに保存
+          await setDoc(doc(db,'users',user.uid),{
                 uid: user.uid,
                 email:user.email,
                 createdAt:new Date(),
-            })
+          })
         alert('登録完了！')
+        //ホーム画面に遷移
         navigate('/');
-        }catch(eroor:any){
+        }catch(error:any){
         alert('登録エラー') 
         }
     }
@@ -72,6 +78,7 @@ const register = () => {
       </div>
       </div>
       <div style={{position:'relative'}}>
+        {/*showPasswordがtrueの場合属性をtext,falseの場合passwordに切り替え*/}
       <input type={showPassword ? 'text':'password'}  
             className='login-input' 
             placeholder='パスワードの確認' 
@@ -91,6 +98,7 @@ const register = () => {
       </div>
       </div>
         <p className='login-text'>
+           {/*ログイン画面に遷移*/}
         <Link to={'/'}>ログイン</Link>
         </p>
       <button className='login-button' onClick={handleRegister}>登録</button>
