@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../styles/payment.css';
-import { query, collection, where, onSnapshot } from 'firebase/firestore';
+import { query, collection, where, onSnapshot, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import Charts from './Charts';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
@@ -19,6 +19,7 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
   const [categoryTotals, setCategoryTotals] = useState<{
     [key: string]: { amount: number; isMine: boolean }[];
   }>({});
+  const [privateState,setPrivateState] = useState<{[key:string]:boolean}>({});
 
   useEffect(() => {
     const auth = getAuth();
@@ -98,6 +99,27 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
     setModalType("transaction");
     onAddClick();
   };
+  const handleCheck = async(categoryName:string)=>{
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if(!user) return;
+    const isChecked = privateState[categoryName] ?? false
+    const q = query(
+      collection(db,'users',user.uid,'transactions'),
+      where('mainCategory','==',categoryName),
+      where('type','==','payment'),
+    );
+    const snap = await getDocs(q);
+    snap.forEach(async(doc) => {
+      await updateDoc(doc.ref,{isPrivate:!isChecked})
+    })  
+    
+    setPrivateState((prev)=>({
+      ...prev,
+      [categoryName]:!isChecked,
+    }))
+
+  }
 
   return (
     <div className='payment-box'>
@@ -114,8 +136,11 @@ const Payment = ({ onAddClick, setModalType, selectedDate, sharedWith,partnerNam
                   const isMine = items.every(item => item.isMine);
 
                   return (
-                    <li key={category} style={{ color: isMine ? 'white' : 'red' }}>
-                      {category}・・・<AnimateNumber value={total} />{isMine && partnerName ? `(${partnerName})`:''}
+                    <li key={category} style={{ color: isMine ? '#f8f8ff' : '#fff8dc' , listStyle:sharedWith &&   isMine? 'none':'disc'}}>
+                      {sharedWith && isMine && <input type='checkbox' style={{scale:'1.5',marginRight:10,}}
+                      checked={privateState[category]??false}
+                       onChange={() => handleCheck(category)} />}
+                      {category}・・・<AnimateNumber value={total} />{!isMine && partnerName ? `(${partnerName})`:''}
                     </li>
                   );
                 })}

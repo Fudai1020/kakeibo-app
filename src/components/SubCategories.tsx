@@ -104,6 +104,7 @@ const SubCategory = ({ subTransactions }: SubCategoryProps) => {
             <div>
             <span className='subcategory-list'>{item.subCategory}・・・<AnimateNumber value={item.amount} />円</span>
             <span className="memo-text">{item.memo? item.memo:'メモなし'}</span>
+            <span className='created-at'>{item.createdAt && item.createdAt.toLocaleDateString('ja-JP')}</span>
             <div className='subicon-buttons'>
             <button className='subicon-button' onClick={()=>handleEditClick(item)} >
                 <FaEdit />

@@ -14,12 +14,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
 }
 .overflow-category{
   height: 450px;
   overflow-y: auto;
   box-sizing: border-box;
   overflow-x: hidden;
+  border: 2px solid white;
+  border-radius: 8px;
+  padding: 20px;
 }
 .category-block {
     color: white;
@@ -36,7 +41,7 @@
     border-bottom: 1px solid #ccc;
     width: 100%;
 }
-.sub-category-item span.memo-text {
+.sub-category-item span.memo-text ,span.created-at{
   display: block;
   text-align: center;
   margin-top: 4px;
