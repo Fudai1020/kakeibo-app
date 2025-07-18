@@ -4,47 +4,52 @@ import { addDoc, collection, query, serverTimestamp, where, getDocs } from 'fire
 import { db } from '../firebase/firebase';
 import { getAuth } from 'firebase/auth';
 
+//親から渡されたpropsの方を定義する
 type Props = {
   onClose: () => void;
   type: 'income' | 'payment';
   incomeCategories: string[];
-  setIncomeCategories: React.Dispatch<React.SetStateAction<string[]>>;
+  setIncomeCategories: React.Dispatch<React.SetStateAction<string[]>>;//親から渡されたset関数をstring型の配列で定義
   paymentCategories: string[];
   setPaymentCategories: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const TransactionFormModal = ({
   onClose,
-  type: initialType,
+  type: initialType, //typeの名前を変えている中身はincomeかpayment
   incomeCategories,
   setIncomeCategories,
   paymentCategories,
   setPaymentCategories
 }: Props) => {
-  const [view, setView] = useState<'form' | 'category'>('form');
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null);
-  const [animeClass, setAnimeClass] = useState('');
-  const [mainCategoryInput, setMainCategoryInput] = useState('');
-  const [selectedMainCategory, setSelectedMainCategory] = useState('');
-  const [type, setType] = useState<'income' | 'payment'>(initialType);
-  const [amount, setAmount] = useState('');
-  const [subCategory, setSubCategory] = useState('');
-  const [memo, setMemo] = useState('');
-  const [date, setDate] = useState('');
-  const [isPrivate, setIsPrivate] = useState(false);
+  const [view, setView] = useState<'form' | 'category'>('form'); //モーダル内の画面の切り替えの管理
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right' | null>(null); //アニメーションの方向の管理
+  const [animeClass, setAnimeClass] = useState(''); //アニメーションのクラスの管理
+  const [mainCategoryInput, setMainCategoryInput] = useState(''); //メインカテゴリを入力するテキストボックス内の入力値を管理
+  const [selectedMainCategory, setSelectedMainCategory] = useState(''); //セレクトボックス内の値を管理
+  const [type, setType] = useState<'income' | 'payment'>(initialType); //モーダル内の支出、収入の切り替えを管理※初期値は親から渡されたpropsのtype
+  const [amount, setAmount] = useState(''); //金額を入力するテキストボックスの入力値を管理
+  const [subCategory, setSubCategory] = useState(''); //サブカテゴリを入力するテキストボックスの値を管理
+  const [memo, setMemo] = useState(''); //メモを入力するテキストエリアの入力値を管理
+  const [date, setDate] = useState(''); //登録日の値を管理
+  const [isPrivate, setIsPrivate] = useState(false); //表示、非表示の選択を管理
 
+  //テキストボックスに入力される値が全角入力の時、半角の数値に嫌韓する処理
   const normalizeAmount = (input: string) => {
+    //テキストボックス内の文字を受け取りコードユニットに変換
     const half = input.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0)).replace(/ /g, '');
-    const numeric = half.replace(/[^0-9]/g, '');
-    return Number(numeric);
+    const numeric = half.replace(/[^0-9]/g, ''); //数字以外の除去
+    return Number(numeric); //数値型で返す
   };
 
+  //フォームの入力値をデータベースに保存する処理
   const handleSubmit = async () => {
-    const auth = getAuth();
-    const currentUser = auth.currentUser;
+    const auth = getAuth(); //Firebaseの認証モジュールを初期化して使えるようにする
+    const currentUser = auth.currentUser; //ユーザ情報を取得
     if (!currentUser) return;
 
     try {
+      //Firebaseのコレクションにデータを追加
       await addDoc(collection(db, 'users', currentUser.uid, 'transactions'), {
         type,
         amount: normalizeAmount(amount),
@@ -58,48 +63,52 @@ const TransactionFormModal = ({
       alert('登録完了！');
       onClose();
     } catch (e) {
+      //エラーハンドリング
       console.error('保存エラー', e);
       alert('保存に失敗しました');
     }
   };
-
+  //カテゴリモーダルを開く処理
   const openCategoryModal = () => {
     setSlideDirection('right');
     setAnimeClass('slide-in-right');
     setView('category');
   };
-
+  //カテゴリモーダルを閉じる処理
   const closeCategoryModal = () => {
     setSlideDirection('left');
     setAnimeClass('slide-in-left');
     setView('form');
   };
-
+  //カテゴリをデータベースに追加する処理
   const addCategory = async (name: string, type: 'income' | 'payment') => {
     const auth = getAuth();
     const user = auth.currentUser;
-    if (!user || !name.trim()) return;
+    if (!user || !name.trim()) return; //ユーザが存在しないか名前が空白の場合返す
 
     try {
+      //新しくcategoriesコレクションに追加
       await addDoc(collection(db, 'users', user.uid, 'categories'), {
         name,
         type,
         createdAt: serverTimestamp(),
       });
-
+      //それぞれのタイプによって管理する場所を変える
       if (type === 'income') {
+        //prev(すでに追加されてある値)に追加する名前が存在していたらそのままで存在しない場合追加
         setIncomeCategories(prev => (prev.includes(name) ? prev : [...prev, name]));
       } else {
         setPaymentCategories(prev => (prev.includes(name) ? prev : [...prev, name]));
       }
 
-      setSelectedMainCategory(name);  // 自動選択
+      setSelectedMainCategory(name);  // セレクトボックスに自動で選択されるようにする
       setMainCategoryInput('');       // 入力欄クリア
     } catch (e) {
       console.error('保存エラー', e);
     }
   };
 
+  //すでに追加されているカテゴリを取得する
   useEffect(() => {
     const fetchCategories = async () => {
       const auth = getAuth();
@@ -107,16 +116,18 @@ const TransactionFormModal = ({
       if (!user) return;
 
       try {
+        //Firebase内のカテゴリで現在のtypeと同じ値を参照
         const q = query(collection(db, 'users', user.uid, 'categories'), where('type', '==', type));
-        const querySnapshot = await getDocs(q);
-        const fetchedCategories: string[] = [];
+        const querySnapshot = await getDocs(q); //参照したデータを取得
+        const fetchedCategories: string[] = []; //文字列の配列を用意
+        //取得したデータを一つずつ判定して配列に入れる
         querySnapshot.forEach(doc => {
           const data = doc.data();
           if (data.name) {
             fetchedCategories.push(data.name);
           }
         });
-
+        //保存されたtypeの値のセレクトボックスにセットする
         if (type === 'income') {
           setIncomeCategories(fetchedCategories);
         } else {
@@ -130,6 +141,7 @@ const TransactionFormModal = ({
     fetchCategories();
   }, [type, setIncomeCategories, setPaymentCategories]);
 
+  //セレクトボックスのオプションとして表示する値
   const getCurrentMainCategories = () => (type === 'income' ? incomeCategories : paymentCategories);
 
   return (

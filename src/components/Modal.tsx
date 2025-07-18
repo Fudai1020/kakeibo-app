@@ -1,8 +1,8 @@
 import '../styles/modal.css'
 
 type Props = {
-  onClose: () => void;
-  children: React.ReactNode;
+  onClose: () => void; //何も返さない関数として定義
+  children: React.ReactNode; //親コンポーネントで書かれた要素全てを受けとる宣言
 };
 
 

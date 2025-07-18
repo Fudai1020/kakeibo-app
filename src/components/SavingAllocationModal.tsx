@@ -5,30 +5,33 @@ import { collection } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import { getAuth } from 'firebase/auth';
 import { FaTrash } from 'react-icons/fa';
+//プロップスの方を指定する
 type props = {
     onClose:() => void;
     balance:number;
   selectedDate:Date;
 }
 const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
-  const [allocations,setAllocations] = useState<{name:string;amount:string}[]>([]);
-  const [allocationName,setAllocationName] = useState("");
-  const [allocationAmount,setAllocationAmount] = useState("");
-  const [isPrivate,setIsPrivate] = useState("");
+  const [allocations,setAllocations] = useState<{name:string;amount:string}[]>([]); //データの値をオブジェクトとして管理
+  const [allocationName,setAllocationName] = useState("");  //貯金名を入力するテキストボックスの値を管理
+  const [allocationAmount,setAllocationAmount] = useState("");  //貯金金額を入力するテキストボックスの値を管理
+  const [isPrivate,setIsPrivate] = useState("");  //公開か非公開の値を管理
+  //全角入力を半角に変換し、数字以外の文字を除去する関数
   const normalizeAmount = (input: string) => {
     const half = input.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0)).replace(/ /g, '');
     const numeric = half.replace(/[^0-9]/g, '');
     return Number(numeric);
   };
-
+  //Firebaseに保存されている貯金名を取得
   useEffect(()=>{
-
-      const auth = getAuth();
-  const currentUser = auth.currentUser;
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
 
     if(currentUser){
     const fetchAllocations = async () =>{
+      //対象のデータを参照して取得
       const snapshot = await getDocs(collection(db,'users',currentUser.uid,'SavingAllocations'));
+      //取得したデータ整形して新しいオブジェクトを作成し一つずつ配列に入れていく
       const data = snapshot.docs.map((doc) => {
         const d = doc.data()
         return{
@@ -37,6 +40,7 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
           createAt:d.date?.toDate?.() || new Date(),
         }
       })
+      //整形したデータを月ごとにフィルターをかける
       const filtered = data.filter((item) => {
         return(
           item.createAt.getFullYear() === selectedDate.getFullYear() &&
@@ -45,24 +49,29 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
       })
       setAllocations(filtered);
     }
+    //関数の実行
     fetchAllocations();
   }
   },[selectedDate]);
+  //データを保存する処理
   const handleSave = async() =>{
+    //ユーザ認証処理
       const auth = getAuth();
       const currentUser = auth.currentUser;
-
+    //ユーザが確認できたら実行
     if(currentUser){
     try{
+      //データをそれぞれ参照したコレクションに更新をして１件ずつ配列に入れる
       const batch = allocations.map((item) => {
         const docRef = doc(db,'users',currentUser.uid,'SavingAllocations',item.name)
         return setDoc(docRef,{
           name:item.name,
-          amount:normalizeAmount(String(item.amount)) || 0,
-          isPrivate:isPrivate==='非公開',
+          amount:normalizeAmount(String(item.amount)) || 0, //文字列に変換してセット
+          isPrivate:isPrivate==='非公開', //isPrivateが非公開ならtrue、違うならfalseをセット
           createdAt:new Date()
         })
       });
+      //1件1件セットしたデータを一括でデータベースに保存させる処理の実行
       await Promise.all(batch);
       onClose();
     }catch(error){
@@ -71,22 +80,31 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
   }
   }
 
+  //入力した貯金名を追加する処理
   const handleClick = () => {
-    if(allocationName.trim() === "") return;
+    if(allocationName.trim() === "") return;  //貯金名が空欄の場合処理を中断
+    //配列の中の名前と、金額の値を更新
     setAllocations([...allocations,{name:allocationName,amount:allocationAmount}]);
+    //テキストボックスを空欄にする
     setAllocationName("");
     setAllocationAmount("");
   }
+  //追加された貯金名を削除する処理
   const handleDelete = async(name:string) =>{
     const auth = getAuth();
     const user = auth.currentUser;
+    //ユーザのUidが確認できなければ処理を中断
     if(!user?.uid) return;
+    //ブラウザの確認アラートを出す
     const confirm = window.confirm('削除しますか？');
+    //キャンセルされたら処理を中断
     if(!confirm) return;
 
     try{
+      //データを参照して削除
       const docRef = doc(db,'users',user.uid,'SavingAllocations',name);
       await deleteDoc(docRef);
+      //stateで管理している貯金名も削除
       setAllocations((prev) => prev.filter((item)=> item.name != name));
     }catch(error){
       console.error('削除失敗',error);
@@ -96,19 +114,19 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
   return (
     <div className="saving-container">
         <h1>振り分け可能金額</h1>
-        <h1>¥{balance.toLocaleString()}
-        </h1>
+        <h1>¥{balance.toLocaleString()}</h1>
         <h2>振り分け先を選ぶ</h2>
         <div className='amount-form'>
         <ul className='allocation-list'>
+          {/*取得したデータをリスト表示*/}
           {allocations.map((item,index)=>(
         <li key={index} className="allocation-item">
         <span className="allocation-name">{item.name}・・・</span>
-        <input type="text" className="allocation-input"
-          value={item.amount} onChange={(e) => {
-          const newAllocations = [...allocations];
-          newAllocations[index].amount = e.target.value;
-          setAllocations(newAllocations);
+        <input type="text" className="allocation-input" value={item.amount} 
+          onChange={(e) => {
+          const newAllocations = [...allocations]; //取得したデータの配列を新しくコピー
+          newAllocations[index].amount = e.target.value; //入力された値を保存
+          setAllocations(newAllocations); //更新した配列をstateで更新
         }}
         />
       <button onClick={() => handleDelete(item.name)} className="saving-delete">

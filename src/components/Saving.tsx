@@ -14,13 +14,16 @@ import AnimateNumber from './AnimateNumber';
 
 const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate,sharedWith}:props) => {
   const [savingTotal,setSavingTotal] = useState(0);
-  const [savingAllocations,setSavingAllocations] = useState<{name:string,amount:number}[]>([]);
+  const [savingAllocations,setSavingAllocations] = useState<{name:string,amount:number}[]>([]);//オブジェクトの型を指定してstate管理
 
-
+  //ユーザ情報と共有相手の情報をselectedDate、sharedwithマウント時に取得
   useEffect(()=>{
     const auth = getAuth();
     let unsubMy = ()=> {};
     let unsubPartner = () =>{};
+    let incomeTotal = 0;
+    let paymentTotal = 0;
+
     const unsubscribeAuth = onAuthStateChanged(auth,(user)=>{
       if(!user) return;
 
@@ -29,9 +32,11 @@ const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate,sharedWith
       const myRef = query(
       collection(db,"users",currentUid,"transactions"));
 
+      //リアルタイムでユーザの情報を監視
       unsubMy = onSnapshot(myRef,(snapshot)=>{
       const docs = snapshot.docs.map((doc)=>{
         const d = doc.data();
+        //データを取り出して整形された型で返す
         return{
           type:d.type,
           amount:typeof d.amount === 'number' ? d.amount : 0,
@@ -53,36 +58,32 @@ const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate,sharedWith
             }
           });
           const allData = [...docs,...partnerDocs];
+          //現在の月と同じものだけにフィルター
           const filteredDocs = allData.filter((item)=>
           item.createdAt.getFullYear() === selectedDate.getFullYear() &&
           item.createdAt.getMonth() === selectedDate.getMonth()
           )
-          let incomeTotal = 0;
-          let paymentTotal = 0;
 
           filteredDocs.forEach((item)=>{
             if(item.type === 'income'){
-              incomeTotal += typeof item.amount === 'number'? item.amount:0;
+              incomeTotal += typeof item.amount === 'number'? item.amount:0; //typeが'income'のデータの金額を合計
             }else if(item.type === 'payment'){
-              paymentTotal += typeof item.amount === 'number' ? item.amount:0;
+              paymentTotal += typeof item.amount === 'number' ? item.amount:0;//typeが'payment'のデータ金額を集計
             }
           });
 
           const balance = incomeTotal - paymentTotal;
           setSavingTotal(balance);
-          onBalanceChange(balance);
+          onBalanceChange(balance);//親コンポーネントに渡す
         });
       }else{
+        //ユーザのデータを現在の月のデータに絞る
       const filteredDocs = docs.filter((item) =>{
         return(
           item.createdAt.getFullYear() === selectedDate.getFullYear() &&
           item.createdAt.getMonth() === selectedDate.getMonth()
         )
       })
-
-      let incomeTotal = 0;
-      let paymentTotal = 0;
-
       filteredDocs.forEach((item)=>{
         if(item.type === "income"){
           incomeTotal += typeof item.amount === "number" ? item.amount:0;
@@ -104,10 +105,11 @@ const Saving = ({onAddClick,setModalType,onBalanceChange,selectedDate,sharedWith
       unsubPartner();
     }
   },[selectedDate,sharedWith]);
-
+//初回マウント時にデータを取得
 useEffect(() => {
   const auth = getAuth();
   let unsubMy = () => {};
+  let unsubUserDoc = () => {};
   let unsubPartner = () => {};
   const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
     if (!user) return;
@@ -125,11 +127,14 @@ useEffect(() => {
       }));
 
       // 自分の user ドキュメントから sharedWith を取得
-      const unsubUserDoc = onSnapshot(userDocRef, (userSnap) => {
+        unsubUserDoc = onSnapshot(userDocRef, (userSnap) => {
         const partnerUid = userSnap.data()?.sharedWith;
 
         if (partnerUid && partnerUid !== currentUid) {
           const partnerRef = query(collection(db, 'users', partnerUid, 'SavingAllocations'));
+          //すでに設定済みのpartner処理を解除して重複を防ぐ
+          unsubPartner();
+          //パートナーの情報の変化をリアルタイム監視
           unsubPartner = onSnapshot(partnerRef, (partnerSnap) => {
             const partnerData = partnerSnap.docs.map((doc) => ({
               name: doc.data().name,
@@ -140,25 +145,25 @@ useEffect(() => {
             setSavingAllocations([...myData, ...partnerData]);
           });
         } else {
+          unsubPartner();
           setSavingAllocations(myData);
         }
       });
-      unsubPartner = () => unsubUserDoc();
     });
   });
-
+  //リアルタイム監視の解除、クリーンアップ
   return () => {
     unsubMy();
+    unsubUserDoc();
     unsubPartner();
     unsubscribeAuth();
   };
 }, []);
-
-
-  const handleClick = ()=>{
-    setModalType("saving");
-    onAddClick();
-  }
+//savingAllocationモーダルを開く情報を親に渡す
+const handleClick = ()=>{
+  setModalType("saving");
+  onAddClick();
+}
   return (
     <div className="saving-box">
         <h1 style={{marginBottom:'-20px'}}>今月の収支</h1>

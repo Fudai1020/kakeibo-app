@@ -7,34 +7,44 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 
 const ChangePassword = () => {
+    //パスワードの内容を管理する
     const [currentPassword,setCurrentPassword] = useState('');
     const [newPassword,setNewPassword] = useState('');
     const [confirmPassword,setConfirmPassword] = useState('');
+    //エラー状態を管理
     const [error,setError] = useState('');
+    //パスワード表示の状態を管理
     const [showCurrentPassword,setCurrentShowPassword] = useState(false);
     const [showNewPassword,setShowNewPassword] = useState(false);
     const [showConfirmPassword,setShowConfirmPassword] = useState(false);
 
+    //パスワードの変更の処理
     const handlePasswordChange = async()=>{
         setError('');
+        //新しいパスワードと確認パスワードが一致しなければエラーメッセージを出して処理を中断
         if(newPassword !== confirmPassword){
             setError('パスワードが一致しません');
             return;
         }
-
+        //Firebsdrからユーザ情報を取得
         const auth = getAuth();
         const user = auth.currentUser;
-
+        //ユーザとメールアドレスが存在していたら変更処理を行う
         if(user && user.email){
+            //メールアドレスとパスワードから認証用の資格情報を作成
             const credential = EmailAuthProvider.credential(user.email,currentPassword);
             try{
+                //作成した資格情報を使用してユーザを再認証
                 await reauthenticateWithCredential(user,credential);
+                //パスワードを更新
                 await updatePassword(user,newPassword );
                 alert('変更しました！');
+                //テキストボックスを空欄にする
                 setCurrentPassword('');
                 setNewPassword('');
                 setConfirmPassword('');
             }catch(err:any){
+                //エラーメッセージを表示
                 setError(err.message);
             }
         }else{

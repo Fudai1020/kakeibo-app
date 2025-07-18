@@ -8,15 +8,18 @@ import { getAuth } from "firebase/auth"
 
 
 const UserProfile = () => {
+    //ユーザ情報を管理する各プロパティは存在しない可能性があるのでoptional(?:)にしている
     const [userData,setUserData] = useState<{name?:string,email?:string,memo?:string} | null>(null);
-
+    //コンポーネントの初回マウント時、ログイン中のユーザ情報を取得してstateにセット
     useEffect(()=>{
         const fetchData = async () =>{
+            //Firebaseから現在のユーザ情報を取得    
             const auth = getAuth();
-            const currentUser   = auth.currentUser;
+            const currentUser = auth.currentUser;
             if(currentUser){
             const docRef = doc(db,'users',currentUser.uid);
             const docSnap = await getDoc(docRef);
+            //取得したデータが存在した場合にstateにセット
             if(docSnap.exists()){
                 setUserData(docSnap.data());
             }else{
@@ -24,7 +27,7 @@ const UserProfile = () => {
             }   
         }
     }
-        fetchData();
+        fetchData(); //データを取得する関数の実行
     },[])
   return (
     <div className="main-container">
@@ -33,6 +36,7 @@ const UserProfile = () => {
         <div className="profile-icon">
         <img src={icon} alt="" className="profile-img"/>
         </div>
+        {/*ユーザ名、メールアドレス、メモを表示（データがない場合は初期メッセージ）*/}
         <h2>{userData?.name || 'NoName'}</h2>
         <h2>{userData?.email || 'メール未設定'}</h2>
         <h2>一言メモ</h2>

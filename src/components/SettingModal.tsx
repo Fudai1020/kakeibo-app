@@ -3,12 +3,14 @@ import '../styles/settingmodal.css'
 import { getAuth, signOut } from 'firebase/auth';
 
 const SettingModal = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //フックスを定義する
+  //ログアウト処理
   const logout = async() =>{
     const auth = getAuth();
     try{
+      //サインアウト関数で認証
       await signOut(auth);
-      navigate('/');
+      navigate('/'); //ログイン画面遷移
     }catch(error){
       console.error('失敗',error);
     }
@@ -17,6 +19,7 @@ const SettingModal = () => {
     <div className="side-contain">
         <div className="settings">
             <h1>設定</h1>
+            {/*リンクを押下時、編集画面、パスワード変更画面にそれぞれ遷移*/}
             <Link to={('/editProfile')}><h2>プロフィールを編集する</h2></Link>
             <Link to={('/ChangePassword')}><h2>パスワードを変更する</h2></Link>
         </div>

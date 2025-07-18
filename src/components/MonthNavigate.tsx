@@ -3,19 +3,21 @@ import '../styles/monthNavigate.css'
 
 type props ={
   date:Date,
-  setDate:React.Dispatch<React.SetStateAction<Date>>;
+  setDate:React.Dispatch<React.SetStateAction<Date>>; //親コンポーネントのset関数に値を渡す
 }
 const MonthNavigate = ({date,setDate}:props) => {
 
+  //前の月に変える処理
   const handlePrevMonth = () => {
-    const prevDate = new Date(date);
-    prevDate.setMonth(prevDate.getMonth()-1);
-    setDate(prevDate);
+    const prevDate = new Date(date); //propsで受けとった値date型オブジェクトをコピーして新しく生成
+    prevDate.setMonth(prevDate.getMonth()-1);  //月をー１にして前の月にする
+    setDate(prevDate);  //親から受け取った更新関数にセット
   }
+  //次の月に変える処理
   const handleNextMonth = () => {
-    const nextDate = new Date(date);
-    nextDate.setMonth(nextDate.getMonth()+1);
-    setDate(nextDate);
+    const nextDate = new Date(date); //propsで受け取った値date型のオブジェクトをコピーして新しく生成
+    nextDate.setMonth(nextDate.getMonth()+1); //月を＋１にして次の月にする
+    setDate(nextDate);  //親から受け取った更新関数にセット
   }
   return (
     <div className="month" >

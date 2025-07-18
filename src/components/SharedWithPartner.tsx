@@ -10,6 +10,7 @@ type Props = {
 };
 
 const PartnerProfile = ({ partnerUid }: Props) => {
+  // 共有相手のプロフィール情報を管理する。各プロパティは存在しない可能性があるためoptional(?:)にしている。
   const [partnerData, setPartnerData] = useState<{
     name?: string;
     email?: string;
@@ -20,45 +21,50 @@ const PartnerProfile = ({ partnerUid }: Props) => {
   const navigate = useNavigate();
   const auth = getAuth();
   const user = auth.currentUser;
-
+  //共有を停止する処理
   const stopShare = async()=>{
+    //ユーザか共有相手が存在しなければ処置を中断
     if(!user || !partnerUid) return;
-
+    // 確認ダイアログを表示し、キャンセルされた場合は処理を中断
     const confirm = window.confirm('本当に共有を停止しますか？');
     if(!confirm) return;
 
     try{
-        const myDocRef = doc(db,'users',user.uid);
-        const partnerDocRef = doc(db,'users',partnerUid);
+      //ユーザのデータを参照
+      const myDocRef = doc(db,'users',user.uid);
+      //共有相手のデータを参照
+      const partnerDocRef = doc(db,'users',partnerUid);
+      //deleteField()で特定のドキュメントのみ削除して更新promise.allで一括更新
+      await Promise.all([
+        updateDoc(myDocRef,{sharedWith:deleteField(),sharedAt:deleteField()}),
+        updateDoc(partnerDocRef,{sharedWith:deleteField(),sharedAt:deleteField()})
+      ]);
+      //sharedページに遷移
 
-        await Promise.all([
-            updateDoc(myDocRef,{sharedWith:deleteField(),sharedAt:deleteField()}),
-            updateDoc(partnerDocRef,{sharedWith:deleteField(),sharedAt:deleteField()})
-        ]);
-
-        navigate('/shared')
+      navigate('/shared')
     }catch(error){
         console.error('エラー',error);
     }
   }
+//共有相手のUidマウント時、共有相手の情報を取得する
+useEffect(() => {
+  const fetchPartnerData = async () => {
+    //取得するデータを指定
+    const docRef = doc(db, 'users', partnerUid);
+    //データを取得する
+    const docSnap = await getDoc(docRef);
+    //取得したデータが存在する場合処理を行う
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      //取得したデータのtimestampをDate型に変換し、データが存在しなければundefinedを返す
+      setPartnerData({...data,sharedAt:data.sharedAt?.toDate?.() ?? undefined});
+    }else{
+      setPartnerData(null);
+    }
+  };
 
-  useEffect(() => {
-    const fetchPartnerData = async () => {
-      const docRef = doc(db, 'users', partnerUid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setPartnerData({
-          ...data,
-          sharedAt:data.sharedAt?.toDate?.() ?? undefined, 
-        });
-      } else {
-        setPartnerData(null);
-      }
-    };
-
-    fetchPartnerData();
-  }, [partnerUid]);
+  fetchPartnerData();
+}, [partnerUid]);
 
   return (
     <div className="main-container">

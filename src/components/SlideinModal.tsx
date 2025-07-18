@@ -1,6 +1,7 @@
+//親から渡されるプロップスの型定義
 type props = {
-  onClose: () => void;
-  children: React.ReactNode;
+  onClose: () => void;  //何も返さない関数
+  children: React.ReactNode;  //Reactで表示できるすべての要素
   isOpen:boolean;
 };
 import '../styles/slideinModal.css'
