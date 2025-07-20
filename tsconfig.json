@@ -1,4 +1,19 @@
 {
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "target": "ESNext",
+    "lib": ["DOM", "ESNext"]
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
