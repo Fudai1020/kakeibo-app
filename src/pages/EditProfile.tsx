@@ -66,7 +66,7 @@ const handleEditSave = async() =>{
     <div>
         <Header />
         <div className="main">
-        <h1 style={{marginTop:'30px',marginBottom:'0'}}>Account</h1>
+        <h1 style={{marginTop:'20px',marginBottom:'-10px'}}>Account</h1>
         <div className="profile-icon">
         <img src={icon} alt="" className="profile-img"/>
         </div>

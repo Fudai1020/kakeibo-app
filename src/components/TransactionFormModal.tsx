@@ -41,6 +41,7 @@ const TransactionFormModal = ({
     const numeric = half.replace(/[^0-9]/g, ''); //数字以外の除去
     return Number(numeric); //数値型で返す
   };
+  console.log(slideDirection);
 
   //フォームの入力値をデータベースに保存する処理
   const handleSubmit = async () => {

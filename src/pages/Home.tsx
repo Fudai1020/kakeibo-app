@@ -66,6 +66,7 @@ const Home = () => {
       unsubscribeUser();
     }
   },[]);
+  console.log(currentUser);
   //モーダルの開閉処理
   const openModal = () => setIsopenModal(true);
   const closeModal = () => setIsopenModal(false);
