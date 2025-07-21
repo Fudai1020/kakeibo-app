@@ -23,6 +23,6 @@ https://kakeibo-app-70d1c.web.app
 
 ## 使用技術
 フロントエンド  
-*React+Vita+TypeScript*  
+**React+Vita+TypeScript**  
 バックエンド,データベース、デプロイホスティング  
-*Firebase,FireStore,FirebaseHosting*
+**Firebase,FireStore,FirebaseHosting**
