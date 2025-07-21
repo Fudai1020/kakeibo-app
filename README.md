@@ -22,10 +22,12 @@ https://kakeibo-app-70d1c.web.app
 があったらいいなと思い作りました。
 
 ## 使用技術
-フロントエンド  
-**React+Vita+TypeScript**  
-バックエンド,データベース、デプロイホスティング  
-**Firebase,FireStore,FirebaseHosting**
+| 項目 | 内容 |
+|-----|------|
+| フロントエンド | React/vita/TypeScript |
+| バックエンド | Firebase/Firestore |
+| スタイリング | CSS Module |
+| デプロイホスティング | Firebase Hosting |
 ## 機能一覧
 | 機能 | 説明 |
 |-----|-----|
