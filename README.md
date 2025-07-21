@@ -26,3 +26,8 @@ https://kakeibo-app-70d1c.web.app
 **React+Vita+TypeScript**  
 バックエンド,データベース、デプロイホスティング  
 **Firebase,FireStore,FirebaseHosting**
+## 機能一覧
+| 機能 | 説明 |
+|-----|-----|
+| ログイン、新規登録機能 | Firebase Authを使用し認証を実現 |
+
