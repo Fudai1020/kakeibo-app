@@ -6,9 +6,11 @@
 ## アプリURL
 
 https://kakeibo-app-70d1c.web.app
+
 テスト用アカウント
 
 メールアドレス：sample@test.com　　
+
 パスワード：test1234
 
 ## スクリーンショット　　
