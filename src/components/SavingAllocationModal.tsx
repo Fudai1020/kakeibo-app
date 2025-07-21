@@ -5,6 +5,7 @@ import { collection } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import { getAuth } from 'firebase/auth';
 import { FaTrash } from 'react-icons/fa';
+import AnimateNumber from './AnimateNumber';
 //プロップスの方を指定する
 type props = {
     onClose:() => void;
@@ -16,6 +17,7 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
   const [allocationName,setAllocationName] = useState("");  //貯金名を入力するテキストボックスの値を管理
   const [allocationAmount,setAllocationAmount] = useState("");  //貯金金額を入力するテキストボックスの値を管理
   const [isPrivate,setIsPrivate] = useState("");  //公開か非公開の値を管理
+  const [totalAllcation,setTotalAllcation] = useState(balance);
   //全角入力を半角に変換し、数字以外の文字を除去する関数
   const normalizeAmount = (input: string) => {
     const half = input.replace(/[０-９]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0)).replace(/ /g, '');
@@ -109,12 +111,18 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
     }catch(error){
       console.error('削除失敗',error);
     }
-
   }
+  useEffect(()=>{
+    const totalAllocated = allocations.reduce((sum,item)=>{
+      return sum + normalizeAmount(item.amount);
+    },0);
+    setTotalAllcation(balance - totalAllocated);
+
+  },[balance,allocations])
   return (
     <div className="saving-container">
         <h1>振り分け可能金額</h1>
-        <h1>¥{balance.toLocaleString()}</h1>
+        <h1 style={{color:totalAllcation > 0 ? 'white':'red'}}><AnimateNumber value={totalAllcation}/></h1>
         <h2>振り分け先を選ぶ</h2>
         <div className='amount-form'>
         <ul className='allocation-list'>
