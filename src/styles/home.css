@@ -19,11 +19,19 @@
     flex-direction: column;
     gap: 8px;
 }
+.income-layout{
+    animation: slideUpFadeIn 0.3s ease-out;
+}
+.saving-layout{
+    animation: slideUpFadeIn 0.5s ease-out;
+
+}
 .payment-layout{
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: slideUpFadeIn 0.8s ease-out;
 }
 
 
