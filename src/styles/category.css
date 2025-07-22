@@ -107,10 +107,8 @@
     transform: translateY(15%);
 }
 .total-amount{
-  position: fixed;
   bottom: 20px;
   left: 50%;
-  transform: translateX(-50%);
   color: white;
   padding: 10px 16px;
   border-radius: 10px;
@@ -208,8 +206,6 @@
     width: 100%;
   }
    .total-amount {
-    position: static;
-    transform: none;
     margin-top: 20px;
     text-align: center;
   }

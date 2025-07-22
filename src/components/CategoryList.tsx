@@ -109,6 +109,7 @@ const CategoryList = ({ transactions }: Props) => {
 
 
   return (
+    <>
     <div className="overflow-category">
       {/*オブジェクトを配列に変換し、グループの中でカテゴリ別の合計金額を計算*/}
       {Object.entries(grouped).map(([mainCategory, subTransactions]) => {
@@ -163,10 +164,11 @@ const CategoryList = ({ transactions }: Props) => {
           </div>
         );
       })}
-    <div className="total-amount">
+    </div>
+     <div className="total-amount">
       <h2>合計：<AnimateNumber value={totalAmount}/></h2>
       </div>
-    </div>
+    </>
   );
 };
 
