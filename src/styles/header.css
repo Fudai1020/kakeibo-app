@@ -3,6 +3,7 @@
     display: flex;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex-wrap: nowrap;
 }
 .header-logo{
     width: 175px;
@@ -30,11 +31,12 @@
 .gap{
     display: flex;
     gap: 100px;
+    white-space: nowrap;
 
 }
 .icons{
     margin-left: 90px;
-
+    white-space: nowrap;
 }
 .gap h1:hover{
       text-decoration: underline;

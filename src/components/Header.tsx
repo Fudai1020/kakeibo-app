@@ -39,7 +39,7 @@ const Header = () => {
             </div>
           <div className='icons'>
             {/*リンククリック時ユーザプロフィール画面を表示*/}
-            <Link to="/userProfile" className='logo-link'><UserCircle2 className='logo-hover user-icon'  style={{verticalAlign:'middle',marginRight:'30px'}}/></Link>
+            <Link to="/userProfile" className='logo-link'><UserCircle2 className='logo-hover user-icon'  style={{verticalAlign:'middle',marginRight:'15px'}}/></Link>
             {/*アイコンクリック時設定モーダルを開く*/}
             <Settings className='logo-hover settings-icon' style={{verticalAlign:'middle'}} onClick={openModal}/>
           </div>
