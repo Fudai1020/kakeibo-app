@@ -224,4 +224,7 @@
 .total-amount {
   font-size: 14px;
 }
+.edit-subcategory input{
+  width: 100px;
+}
 }
