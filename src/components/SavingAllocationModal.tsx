@@ -42,14 +42,7 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
           createAt:d.date?.toDate?.() || new Date(),
         }
       })
-      //整形したデータを月ごとにフィルターをかける
-      const filtered = data.filter((item) => {
-        return(
-          item.createAt.getFullYear() === selectedDate.getFullYear() &&
-          item.createAt.getMonth() === selectedDate.getMonth()
-        )
-      })
-      setAllocations(filtered);
+      setAllocations(data);
     }
     //関数の実行
     fetchAllocations();
@@ -85,6 +78,12 @@ const SavingAllocationModal = ({onClose,balance,selectedDate}:props) => {
   //入力した貯金名を追加する処理
   const handleClick = () => {
     if(allocationName.trim() === "") return;  //貯金名が空欄の場合処理を中断
+    const isDuplicate = allocations.some(item=>item.name === allocationName);
+    if(isDuplicate){
+      alert('同じ名前が存在しています');
+      setAllocationName('');
+      return;
+    }
     //配列の中の名前と、金額の値を更新
     setAllocations([...allocations,{name:allocationName,amount:allocationAmount}]);
     //テキストボックスを空欄にする
